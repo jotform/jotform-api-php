@@ -91,7 +91,7 @@ class JotForm {
         /*
          * Handle HTTP Errors
          */
-
+        
         if ($http_status != 200) {
 
             if ($http_status == 401) {
@@ -233,7 +233,7 @@ class JotForm {
      * @return [type]         [description]
      */
     public function createFormSubmissions($formID, $submission){
-        return $this->_executePostRequest("form/". $formID ."/submissions", array('submission' => $submission));
+        return $this->_executePostRequest("form/". $formID ."/submissions", $submission);
     }
 
     /**
