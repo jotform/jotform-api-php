@@ -1,6 +1,6 @@
 jotform-api-php 
 ===============
-JotForm API - PHP Client
+[JotForm API](http://api.jotform.com/docs/) - PHP Client
 
 
 ### Installation
