@@ -58,13 +58,21 @@ Get latest submissions of the user
 <?php
     
     try {
-        include "jotform-api-php/JotForm.php";
+    include "jotform-api-php/JotForm.php";
         
         $jotformAPI = new JotForm("YOUR API KEY");
         $latestSubmissions = $jotformAPI->getSubmissions();
     
         foreach ($latestSubmissions as $submission) {
-            echo sprintf("%s - %s \n", $submission["created_at"], implode(" ", $submission["fields"]));
+            $date = $submission["created_at"];
+
+            echo sprintf("%s - ", $date);
+
+            $answers = $submission["answers"];
+
+            foreach ($answers as $answer) {
+                echo sprintf("%s \n", implode(" ", $answer));
+            }
         }
     }
     catch (Exception $e) {
