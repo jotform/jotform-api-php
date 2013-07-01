@@ -233,7 +233,19 @@ class JotForm {
      * @return [type]         [description]
      */
     public function createFormSubmissions($formID, $submission){
-        return $this->_executePostRequest("form/". $formID ."/submissions", $submission);
+        $sub = array();
+
+        foreach ($submission as $key => $value) {
+            if (strpos($key, "first") != false) {
+                $sub["submission[".substr($key, 0, strpos($key, "_"))."][first]"] = $value;
+            } else if (strpos($key, "last") != false) {
+                $sub["submission[".substr($key, 0, strpos($key, "_"))."][last]"] = $value;
+            } else {
+                $sub["submission[".$key."]"] = $value;
+            }
+        }
+
+        return $this->_executePostRequest("form/". $formID ."/submissions", $sub);
     }
 
     /**
