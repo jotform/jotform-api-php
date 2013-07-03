@@ -295,11 +295,20 @@ class JotForm {
 
     /**
     * [getFolderById description]
-    * @param  [type] $subId [description]
+    * @param  [type] $folderID [description]
     * @return [type] [description]
     */
     public function getFolder($folderID) {
         return $this->_executeGetRequest("folder/".$folderID);
+    }
+
+        /**
+    * [getFormProperties description]
+    * @param  [type] $formID [description]
+    * @return [type] [description]
+    */
+    public function getFormProperties($formID) {
+        return $this->_executeGetRequest("form/".$formID."/properties");
     }
 }
 
