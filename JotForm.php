@@ -302,13 +302,23 @@ class JotForm {
         return $this->_executeGetRequest("folder/".$folderID);
     }
 
-        /**
+    /**
     * [getFormProperties description]
     * @param  [type] $formID [description]
     * @return [type] [description]
     */
     public function getFormProperties($formID) {
         return $this->_executeGetRequest("form/".$formID."/properties");
+    }
+
+    /**
+    * [getFormProperty description]
+    * @param  [type] $formID [description]
+    * @param  [type] $propertyKey [description]
+    * @return [type] [description]
+    */
+    public function getFormProperty($formID, $propertyKey) {
+        return $this->_executeGetRequest("form/".$formID."/properties/".$propertyKey);
     }
 }
 
