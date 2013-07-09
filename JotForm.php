@@ -57,9 +57,9 @@ class JotForm {
             $params_string = "?" . implode("&",$params_array);
             unset($params_array);
             $url = $url.$params_string;
+            $this->_debugLog("params string".$params_string);
+            
         }
-
-        $this->_debugLog("params string".$params_string);
 
         $this->_debugLog("fetching url : ".$url);
 
