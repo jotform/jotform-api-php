@@ -236,46 +236,14 @@ class JotForm {
         $sub = array();
 
         foreach ($submission as $key => $value) {
-                if (strpos($key, "first")) {
-                    $sub["submission[".substr($key, 0, strpos($key, "_"))."][first]"] = $value;
-                } else if (strpos($key, "last")) {
-                    $sub["submission[".substr($key, 0, strpos($key, "_"))."][last]"] = $value;
-                } else if (strpos($key, "month")) {
-                    $sub["submission[".substr($key, 0, strpos($key, "_"))."][month]"] = $value;
-                } else if (strpos($key, "day")) {
-                    $sub["submission[".substr($key, 0, strpos($key, "_"))."][day]"] = $value;
-                } else if (strpos($key, "year")) {
-                    $sub["submission[".substr($key, 0, strpos($key, "_"))."][year]"] = $value;
-                } else if (strpos($key, "hour")) {
-                    $sub["submission[".substr($key, 0, strpos($key, "_"))."][hour]"] = $value;
-                } else if (strpos($key, "min")) {
-                    $sub["submission[".substr($key, 0, strpos($key, "_"))."][min]"] = $value;
-                } else if (strpos($key, "ampm")) {
-                    $sub["submission[".substr($key, 0, strpos($key, "_"))."][ampm]"] = $value;
-                } else if (strpos($key, "addr_line1")) {
-                    $sub["submission[".substr($key, 0, strpos($key, "_"))."][addr_line1]"] = $value;
-                } else if (strpos($key, "addr_line2")) {
-                    $sub["submission[".substr($key, 0, strpos($key, "_"))."][addr_line2]"] = $value;
-                } else if (strpos($key, "city")) {
-                    $sub["submission[".substr($key, 0, strpos($key, "_"))."][city]"] = $value;
-                } else if (strpos($key, "state")) {
-                    $sub["submission[".substr($key, 0, strpos($key, "_"))."][state]"] = $value;
-                } else if (strpos($key, "postal")) {
-                    $sub["submission[".substr($key, 0, strpos($key, "_"))."][postal]"] = $value;
-                } else if (strpos($key, "country")) {
-                    $sub["submission[".substr($key, 0, strpos($key, "_"))."][country]"] = $value;
-                } else if (strpos($key, "area")) {
-                    $sub["submission[".substr($key, 0, strpos($key, "_"))."][area]"] = $value;
-                } else if (strpos($key, "phone")) {
-                    $sub["submission[".substr($key, 0, strpos($key, "_"))."][phone]"] = $value;
-                } else if (strpos($key, "hourSelect")) {
-                    $sub["submission[".substr($key, 0, strpos($key, "_"))."][hourSelect]"] = $value;
-                } else if (strpos($key, "minuteSelect")) {
-                    $sub["submission[".substr($key, 0, strpos($key, "_"))."][minuteSelect]"] = $value;
-                } else {
-                    $sub["submission[".$key."]"] = $value;
-                }
+            if (strpos($key, "_")) {
+                $qid = substr($key, 0, strpos($key, "_"));
+                $type = substr($key, strpos($key, "_") + 1);
+                $sub["submission[$qid][$type]"] = $value;
+            } else {
+                $sub["submission[".$key."]"] = $value;
             }
+        }
 
         return $this->_executePostRequest("form/". $formID ."/submissions", $sub);
     }
