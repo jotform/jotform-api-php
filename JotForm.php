@@ -49,7 +49,7 @@ class JotForm {
 
         $this->_debugDump($params);
 
-        if ($method=="GET"){
+        if ($method=="GET" && $params != null){
             $params_array = array();
             foreach ($params as $key => $value) {
                 $params_array[] = $key ."=". $value;
@@ -117,6 +117,28 @@ class JotForm {
         return $this->_executeHttpRequest($url, $params, "POST");
     }
 
+    private function createConditions($offset, $limit, $filter, $orderBy) {
+        $params = array();
+
+        if($offset) {
+            $params["offset"] = $offset;
+        }
+
+        if ($limit) {
+            $params["limit"] = $limit;
+        }
+
+        if ($filter != null) {
+            $params["filter"] = json_encode($filter);
+        }
+
+        if ($orderBy) {
+            $params["orderBy"] = $orderBy;
+        }
+
+        return $params;
+    }
+
     /**
      * Returns User object
      * @return [type] [description]
@@ -146,8 +168,10 @@ class JotForm {
      * [getSubmissions description]
      * @return [type] [description]
      */
-    public function getSubmissions(){
-        return $this->_executeGetRequest("user/submissions");
+    public function getSubmissions($offset = 0, $limit = 0, $filter = null, $orderBy = null){
+        $params = $this->createConditions($offset, $limit, $filter, $orderBy);
+
+        return $this->_executeGetRequest("user/submissions", $params);
     }
 
     /**
@@ -223,8 +247,10 @@ class JotForm {
      * @param  [type] $formID [description]
      * @return [type]         [description]
      */
-    public function getFormSubmissions($formID){
-        return $this->_executeGetRequest("form/". $formID ."/submissions");
+    public function getFormSubmissions($formID, $offset = 0, $limit = 0, $filter = null, $orderBy = null){
+        $params = $this->createSubmissionConditions($offset, $limit, $filter, $orderBy);
+
+        return $this->_executeGetRequest("form/". $formID ."/submissions", $params);
     }
 
     /**
