@@ -76,6 +76,11 @@ class JotForm {
             curl_setopt($ch,CURLOPT_POSTFIELDS, $params);
         }
 
+        if ($method=="DELETE"){
+            $this->_debugLog("delete");
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE" );
+        }
+
         $result = curl_exec($ch);
 
         if ($result == false){
@@ -115,6 +120,10 @@ class JotForm {
 
     private function _executePostRequest($url, $params){
         return $this->_executeHttpRequest($url, $params, "POST");
+    }
+
+    private function _executeDeleteRequest($url, $params=array()){
+        return $this->_executeHttpRequest($url, $params, "DELETE");
     }
 
     private function createConditions($offset, $limit, $filter, $orderBy) {
@@ -345,6 +354,15 @@ class JotForm {
     */
     public function getFormProperty($formID, $propertyKey) {
         return $this->_executeGetRequest("form/".$formID."/properties/".$propertyKey);
+    }
+
+    /**
+    * [deleteSubmission description]
+    * @param  [type] $sid [description]
+    * @return [type] [description]
+    */
+    public function deleteSubmission($sid) {
+        return $this->_executeDeleteRequest("submission/".$sid);
     }
 }
 
