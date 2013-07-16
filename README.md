@@ -56,28 +56,31 @@ Get latest submissions of the user
     
 ```php
 <?php
-    
-    try {
-    include "jotform-api-php/JotForm.php";
+
+try {
+        include "JotForm.php";
         
-        $jotformAPI = new JotForm("YOUR API KEY");
-        $latestSubmissions = $jotformAPI->getSubmissions();
-    
-        foreach ($latestSubmissions as $submission) {
-            $date = $submission["created_at"];
-
-            echo sprintf("%s - ", $date);
-
-            $answers = $submission["answers"];
-
-            foreach ($answers as $answer) {
-                echo sprintf("%s \n", implode(" ", $answer));
-            }
-        }
-    }
-    catch (Exception $e) {
+        $jotformAPI = new JotForm("YOUR API KEY", true);
+        
+        $filter = array(
+                "id:gt" => "239252191641336722",
+                "created_at:gt" => "2013-07-09 07:48:34",
+        );
+        
+        $subs = $jotformAPI->getSubmissions(0,0,$filter,"");
+        var_dump($subs); 
+        
+        $filter = array(
+                "id:gt" => "239176717911737253",
+        );
+        
+        $formSubs = $jotformAPI->getFormSubmissions(31893329804865, 0, 2, $filter);
+        var_dump($formSubs);
+        
+        
+} catch (Exception $e) {
         var_dump($e->getMessage());
-    }
+}
     
 ?>
 ```    
