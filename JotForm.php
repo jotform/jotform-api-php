@@ -366,6 +366,27 @@ class JotForm {
     public function deleteSubmission($sid) {
         return $this->_executeDeleteRequest("submission/".$sid);
     }
+
+    /**
+    * [editSubmission description]
+    * @param  [type] $sid [description]
+    * @return [type] [description]
+    */
+    public function editSubmission($sid, $submission) {
+        $sub = array();
+
+        foreach ($submission as $key => $value) {
+            if (strpos($key, "_")) {
+                $qid = substr($key, 0, strpos($key, "_"));
+                $type = substr($key, strpos($key, "_") + 1);
+                $sub["submission[$qid][$type]"] = $value;
+            } else {
+                $sub["submission[".$key."]"] = $value;
+            }
+        }
+
+        return $this->_executePostRequest("submission/".$sid, $sub);
+    }
 }
 
 class JotFormException extends Exception{}
