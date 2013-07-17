@@ -387,6 +387,15 @@ class JotForm {
 
         return $this->_executePostRequest("submission/".$sid, $sub);
     }
+
+    /**
+    * [cloneForm description]
+    * @param  [type] $formID [description]
+    * @return [type] [description]
+    */
+    public function cloneForm($formID) {
+        return $this->_executePostRequest("form/".$formID."/clone", null);
+    }
 }
 
 class JotFormException extends Exception{}
