@@ -144,7 +144,7 @@ class JotForm {
         if ($orderBy) {
             $params["orderBy"] = $orderBy;
         }
-        
+
         return $params;
     }
 
@@ -169,8 +169,10 @@ class JotForm {
      * [getForms description]
      * @return [type] [description]
      */
-    public function getForms(){
-        return $this->_executeGetRequest("user/forms");
+    public function getForms($offset = 0, $limit = 0, $filter = null, $orderBy = null){
+        $params = $this->createConditions($offset, $limit, $filter, $orderBy);
+
+        return $this->_executeGetRequest("user/forms", $params);
     }
 
     /**
