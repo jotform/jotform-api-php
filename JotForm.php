@@ -396,6 +396,15 @@ class JotForm {
     public function cloneForm($formID) {
         return $this->_executePostRequest("form/".$formID."/clone", null);
     }
+
+    /**
+    * [deleteFormQuestion description]
+    * @param  [type] $formID [description]
+    * @return [type] [description]
+    */
+    public function deleteFormQuestion($formID, $qid) {
+        return $this->_executeDeleteRequest("form/".$formID."/question/".$qid, null);
+    }
 }
 
 class JotFormException extends Exception{}
