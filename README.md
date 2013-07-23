@@ -108,7 +108,7 @@ Submission and form filter examples
 try {
         include "jotform-api-php/JotForm.php";
         
-        $jotformAPI = new JotForm("YOUR API KEY", true);
+        $jotformAPI = new JotForm("YOUR API KEY");
         
         $filter = array(
                 "id:gt" => "239252191641336722",
