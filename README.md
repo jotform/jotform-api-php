@@ -115,14 +115,14 @@ try {
                 "created_at:gt" => "2013-07-09 07:48:34",
         );
         
-        $subs = $jotformAPI->getSubmissions(0,0,$filter,"");
+        $subs = $jotformAPI->getSubmissions(0, 0, $filter, "");
         var_dump($subs); 
         
         $filter = array(
                 "id:gt" => "239176717911737253",
         );
         
-        $formSubs = $jotformAPI->getFormSubmissions(31893329804865, 0, 2, $filter);
+        $formSubs = $jotformAPI->getForms(0, 0, 2, $filter);
         var_dump($formSubs);
         
         
