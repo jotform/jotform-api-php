@@ -50,15 +50,63 @@ Print all forms of the user
     }
 
 ?>
-```    
+```  
+Get submissions of the latest form
+    
+```php
+<?php
+    
+    try {
+        include "jotform-api-php/JotForm.php";
+        
+        $jotformAPI = new JotForm("YOUR API KEY");
 
-Get latest submissions of the user
+        $forms = $jotformAPI->getForms(0, 1, null, null);
+
+        $latestForm = $forms[0];
+
+        $latestFormID = $latestForm["id"];
+
+        $submissions = $jotformAPI->getFormSubmissions($latestFormID);
+
+        var_dump($submissions);
+
+    }
+    catch (Exception $e) {
+        var_dump($e->getMessage());
+    }
+    
+?>
+```
+
+Get latest 100 submissions ordered by creation date
+    
+```php
+<?php
+    
+    try {
+        include "jotform-api-php/JotForm.php";
+        
+        $jotformAPI = new JotForm("YOUR API KEY");
+
+        $submissions = $jotformAPI->getSubmissions(0, 100, null, "created_at");
+
+        var_dump($submissions);
+    }
+    catch (Exception $e) {
+        var_dump($e->getMessage());
+    }
+    
+?>
+```   
+
+Submission and form filter examples
     
 ```php
 <?php
 
 try {
-        include "JotForm.php";
+        include "jotform-api-php/JotForm.php";
         
         $jotformAPI = new JotForm("YOUR API KEY", true);
         
@@ -85,6 +133,31 @@ try {
 ?>
 ```    
 
+Delete last 50 submissions
+
+```php
+<?php
+    
+    try {
+        include "jotform-api-php/JotForm.php";
+        
+        $jotformAPI = new JotForm("YOUR API KEY");
+
+        $submissions = $jotformAPI->getSubmissions(0, 50, null, null);
+
+        foreach ($submissions as $submission) {
+            $result = $jotformAPI->deleteSubmission($submission["id"]);
+            print $result;
+        }
+
+
+    }
+    catch (Exception $e) {
+        var_dump($e->getMessage());
+    }
+    
+?>
+```    
     
 First the _JotForm_ class is included from the _jotform-api-php/JotForm.php_ file. This class provides access to JotForm's API. You have to create an API client instance with your API key. 
 In any case of exception (wrong authentication etc.), you can catch it or let it fail with fatal error.
