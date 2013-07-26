@@ -241,7 +241,7 @@ class JotForm {
     /**
     *[getFormQuestion Get details about a question]
     * @param [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
-    * @param [integer] $qid [Identifier for each question on a form.]
+    * @param [integer] $qid [Identifier for each question on a form. You can get a list of question IDs from /form/{id}/questions.]
     * @return [array] [Returns question properties like required and validation.]
     */
     public function getFormQuestion($formID, $qid){
@@ -401,7 +401,7 @@ class JotForm {
     /**
     * [deleteFormQuestion Delete a single form question.]
     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
-    * @param [integer] $qid [Identifier for each question on a form.]
+    * @param [integer] $qid [Identifier for each question on a form. You can get a list of question IDs from /form/{id}/questions.]
     * @return [array] [Returns status of request.]
     */
     public function deleteFormQuestion($formID, $qid) {
