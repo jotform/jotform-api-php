@@ -167,7 +167,7 @@ class JotForm {
     }
 
     /**
-     * [getSubmissions Get a list of forms for this account.]
+     * [getSubmissions Get a list of submissions for this account.]
      * @param [int] $offset [Start of each result set for form list. (optional)]
      * @param [int] $limit [Number of results in each result set for form list. (optional)]
      * @param [array] $filter [Filters the query results to fetch a specific form range.(optional)]
