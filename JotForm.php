@@ -154,8 +154,8 @@ class JotForm {
 
     /**
      * [getForms Get a list of forms for this account]
-     * @param [int] $offset [Start of each result set for form list. (optional)]
-     * @param [int] $limit [Number of results in each result set for form list. (optional)]
+     * @param [integer] $offset [Start of each result set for form list. (optional)]
+     * @param [integer] $limit [Number of results in each result set for form list. (optional)]
      * @param [array] $filter [Filters the query results to fetch a specific form range.(optional)]
      * @param [string] $orderBy [Order results by a form field name. (optional)]
      * @return [array] [Returns basic details such as title of the form, when it was created, number of new and total submissions.]
@@ -222,8 +222,8 @@ class JotForm {
 
     /**
      * [getForm Get basic information about a form.]
-     * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
-     * @return [array] [Returns form id, status, update and creation dates, submission count etc.]
+     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
+     * @return [array] [Returns form ID, status, update and creation dates, submission count etc.]
      */
     public function getForm($formID){
         return $this->_executeGetRequest("form/". $formID);
@@ -231,7 +231,7 @@ class JotForm {
 
     /**
     * [getFormQuestions Get a list of all questions on a form.]
-    * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @return [array] [Returns question properties of a form.]
     */
     public function getFormQuestions($formID){
@@ -240,7 +240,7 @@ class JotForm {
 
     /**
     *[getFormQuestion Get details about a question]
-    * @param [integer] $formID [Form ID is the numbers you see on a form URL.]
+    * @param [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @param [integer] $qid [Identifier for each question on a form.]
     * @return [array] [Returns question properties like required and validation.]
     */
@@ -250,7 +250,7 @@ class JotForm {
 
     /**
      * [getFormSubmissions List of form reponses.]
-     * @param [integer] $formID [Form ID is the numbers you see on a form URL.]
+     * @param [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
      * @param [int] $offset [Start of each result set for form list. (optional)]
      * @param [int] $limit [Number of results in each result set for form list. (optional)]
      * @param [array] $filter [Filters the query results to fetch a specific form range.(optional)]
@@ -265,7 +265,7 @@ class JotForm {
 
     /**
      * [createFormSubmissions Submit data to this form using the API.]
-     * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
      * @param [array] $submission [Submission data with question ids.]
      * @return [array] [Returns posted submission id and URL.]
      */
@@ -287,7 +287,7 @@ class JotForm {
 
     /**
     * [getFormFiles List of files uploaded on a form.]
-    * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @return [array] [Returns uploaded file information and URLs on a specific form.]
     */
     public function getFormFiles($formID){
@@ -296,7 +296,7 @@ class JotForm {
 
     /**
     * [getFormWebhooks Get list of webhooks for a form]
-    * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @return [array] [Returns list of webhooks for this form.]
     */
     public function getFormWebhooks($formID){
@@ -305,7 +305,7 @@ class JotForm {
 
     /**
     * [createFormWebhook Add a new webhook]
-    * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @return [array] [Returns list of webhooks for this form.]
     */
     public function createFormWebhook($formID, $webhookURL){
@@ -341,7 +341,7 @@ class JotForm {
 
     /**
     * [getFormProperties Get a list of all properties on a form.]
-    * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @return [array] [Includes form properties like width, expiration date, style etc.]
     */
     public function getFormProperties($formID) {
@@ -350,7 +350,7 @@ class JotForm {
 
     /**
     * [getFormProperty Get a specific property of the form.]
-    * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @param  [string] $propertyKey [Property key]
     * @return [array] [Returns given property key value.]
     */
@@ -391,7 +391,7 @@ class JotForm {
 
     /**
     * [cloneForm Clone a single form.]
-    * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @return [array] [Returns status of request.]
     */
     public function cloneForm($formID) {
@@ -400,7 +400,7 @@ class JotForm {
 
     /**
     * [deleteFormQuestion Delete a single form question.]
-    * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @param [integer] $qid [Identifier for each question on a form.]
     * @return [array] [Returns status of request.]
     */
