@@ -249,7 +249,7 @@ class JotForm {
     }
 
     /**
-     * [getFormSubmissions List of form reponses.]
+     * [getFormSubmissions List of a form submissions.]
      * @param [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
      * @param [int] $offset [Start of each result set for form list. (optional)]
      * @param [int] $limit [Number of results in each result set for form list. (optional)]
@@ -266,8 +266,8 @@ class JotForm {
     /**
      * [createFormSubmissions Submit data to this form using the API.]
      * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
-     * @param [array] $submission [Submission data with question ids.]
-     * @return [array] [Returns posted submission id and URL.]
+     * @param [array] $submission [Submission data with question IDs.]
+     * @return [array] [Returns posted submission ID and URL.]
      */
     public function createFormSubmissions($formID, $submission){
         $sub = array();
@@ -297,7 +297,7 @@ class JotForm {
     /**
     * [getFormWebhooks Get list of webhooks for a form]
     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
-    * @return [array] [Returns list of webhooks for this form.]
+    * @return [array] [Returns list of webhooks for a specific form.]
     */
     public function getFormWebhooks($formID){
         return $this->_executeGetRequest("form/".$formID."/webhooks");
@@ -306,7 +306,8 @@ class JotForm {
     /**
     * [createFormWebhook Add a new webhook]
     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
-    * @return [array] [Returns list of webhooks for this form.]
+    * @param [string] $webhookURL [Webhook URL is where form data will be posted when form is submitted.]
+    * @return [array] [Returns list of webhooks for a specific form.]
     */
     public function createFormWebhook($formID, $webhookURL){
         return $this->_executePostRequest("form/".$formID."/webhooks",array("webhookURL" => $webhookURL) );
@@ -332,7 +333,7 @@ class JotForm {
 
     /**
     * [getFolder Get folder details]
-    * @param  [integer] $folderID [Get a list of folders from /user/folders]
+    * @param  [integer] $folderID [Get a list of folders from /user/folders.]
     * @return [array] [Returns a list of forms in a folder, and other details about the form such as folder color.]
     */
     public function getFolder($folderID) {
