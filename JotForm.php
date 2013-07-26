@@ -38,11 +38,6 @@ class JotForm {
         }
     }
 
-    /**
-     * [_executeGetRequest description]
-     * @param  [type] $url [description]
-     * @return [type]      [description]
-     */
     private function _executeHttpRequest($path, $params=array(), $method){
 
         $url = implode("/", array($this->baseUrl, $this->apiVersion,$path));
@@ -149,8 +144,8 @@ class JotForm {
     }
 
     /**
-     * Returns User object
-     * @return [type] [description]
+     * [gteUser Get user account details for this JotForm user.]
+     * @return [array] [Includes user account type, avatar URL, name, email, website URL and account limits.]
      */
     public function getUser(){
         $res = $this->_executeGetRequest("user");
@@ -158,16 +153,20 @@ class JotForm {
     }
 
     /**
-    * [getUserUsage description]
-    * @return [type] [description]
+    * [getUserUsage Get number of form submissions received this month.]
+    * @return [array] [Also, includes number of SSL form submissions, payment form submissions and upload space used by user.]
     */
     public function getUsage(){
         return $this->_executeGetRequest("user/usage");
     }
 
     /**
-     * [getForms description]
-     * @return [type] [description]
+     * [getForms Get a list of forms for this account]
+     * @param [int] $offset [Start of each result set for form list. (optional)]
+     * @param [int] $limit [Number of results in each result set for form list. (optional)]
+     * @param [array] $filter [Filters the query results to fetch a specific form range.(optional)]
+     * @param [string] $orderBy [Order results by a form field name. (optional)]
+     * @return [array] [Includes basic details such as title of the form, when it was created, number of new and total submissions.]
      */
     public function getForms($offset = 0, $limit = 0, $filter = null, $orderBy = null){
         $params = $this->createConditions($offset, $limit, $filter, $orderBy);
