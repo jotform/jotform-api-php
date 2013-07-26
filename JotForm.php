@@ -122,29 +122,21 @@ class JotForm {
     }
 
     private function createConditions($offset, $limit, $filter, $orderBy) {
-        $params = array();
 
-        if($offset) {
-            $params["offset"] = $offset;
-        }
-
-        if ($limit) {
-            $params["limit"] = $limit;
-        }
-
-        if ($filter != null) {
-            $params["filter"] = json_encode($filter);
-        }
-
-        if ($orderBy) {
-            $params["orderBy"] = $orderBy;
+        foreach(array("offset", "limit", "filter", "orderBy") as $arg) {
+             if(${$arg}) {
+                 $params[$arg] = ${$arg};
+                 if($arg == "filter") {
+                     $params[$arg] = json_encode($params[$arg]);
+                 }
+             }
         }
 
         return $params;
     }
 
     /**
-     * [gteUser Get user account details for this JotForm user.]
+     * [getUser Get user account details for this JotForm user.]
      * @return [array] [Includes user account type, avatar URL, name, email, website URL and account limits.]
      */
     public function getUser(){
