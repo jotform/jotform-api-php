@@ -105,7 +105,7 @@ Submission and form filter examples
 ```php
 <?php
 
-try {
+    try {
         include "jotform-api-php/JotForm.php";
         
         $jotformAPI = new JotForm("YOUR API KEY");
@@ -124,11 +124,9 @@ try {
         
         $formSubs = $jotformAPI->getForms(0, 0, 2, $filter);
         var_dump($formSubs);
-        
-        
-} catch (Exception $e) {
-        var_dump($e->getMessage());
-}
+    } catch (Exception $e) {
+            var_dump($e->getMessage());
+    }
     
 ?>
 ```    
@@ -149,8 +147,6 @@ Delete last 50 submissions
             $result = $jotformAPI->deleteSubmission($submission["id"]);
             print $result;
         }
-
-
     }
     catch (Exception $e) {
         var_dump($e->getMessage());
