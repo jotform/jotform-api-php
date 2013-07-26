@@ -369,7 +369,7 @@ class JotForm {
 
     /**
     * [editSubmission Edit a single submission.]
-    * @param  [integer] $sid [description]
+    * @param  [integer] $sid [You can get submission IDs when you call /form/{id}/submissions.]
     * @param [array] $submission [New submission data with question ids.]
     * @return [array] [Returns status of request.]
     */
