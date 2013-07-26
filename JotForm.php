@@ -136,8 +136,8 @@ class JotForm {
     }
 
     /**
-     * [getUser Get user account details for this JotForm user.]
-     * @return [array] [Includes user account type, avatar URL, name, email, website URL and account limits.]
+     * [getUser Get user account details for a JotForm user.]
+     * @return [array] [Returns user account type, avatar URL, name, email, website URL and account limits.]
      */
     public function getUser(){
         $res = $this->_executeGetRequest("user");
@@ -146,7 +146,7 @@ class JotForm {
 
     /**
     * [getUserUsage Get number of form submissions received this month.]
-    * @return [array] [Also, includes number of SSL form submissions, payment form submissions and upload space used by user.]
+    * @return [array] [Returns number of submissions, number of SSL form submissions, payment form submissions and upload space used by user.]
     */
     public function getUsage(){
         return $this->_executeGetRequest("user/usage");
@@ -158,7 +158,7 @@ class JotForm {
      * @param [int] $limit [Number of results in each result set for form list. (optional)]
      * @param [array] $filter [Filters the query results to fetch a specific form range.(optional)]
      * @param [string] $orderBy [Order results by a form field name. (optional)]
-     * @return [array] [Includes basic details such as title of the form, when it was created, number of new and total submissions.]
+     * @return [array] [Returns basic details such as title of the form, when it was created, number of new and total submissions.]
      */
     public function getForms($offset = 0, $limit = 0, $filter = null, $orderBy = null){
         $params = $this->createConditions($offset, $limit, $filter, $orderBy);
@@ -167,8 +167,12 @@ class JotForm {
     }
 
     /**
-     * [getSubmissions description]
-     * @return [type] [description]
+     * [getSubmissions Get a list of forms for this account.]
+     * @param [int] $offset [Start of each result set for form list. (optional)]
+     * @param [int] $limit [Number of results in each result set for form list. (optional)]
+     * @param [array] $filter [Filters the query results to fetch a specific form range.(optional)]
+     * @param [string] $orderBy [Order results by a form field name. (optional)]
+     * @return [array] [Returns basic details such as title of the form, when it was created, number of new and total submissions.]
      */
     public function getSubmissions($offset = 0, $limit = 0, $filter = null, $orderBy = null){
         $params = $this->createConditions($offset, $limit, $filter, $orderBy);
@@ -177,77 +181,81 @@ class JotForm {
     }
 
     /**
-    * [getUserSubusers description]
-    * @return [type] [description]
+    * [getUserSubusers Get a list of sub users for this account.]
+    * @return [array] [Returns list of forms and form folders with access privileges.]
     */
     public function getSubusers(){
         return $this->_executeGetRequest("user/subusers");
     }
 
     /**
-    * [getUserFolders description]
-    * @return [type] [description]
+    * [getUserFolders Get a list of form folders for this account.]
+    * @return [array] [Returns name of the folder and owner of the folder for shared folders.]
     */
     public function getFolders(){
         return $this->_executeGetRequest("user/folders");
     }
 
     /**
-    * [getUserReports description]
-    * @return [type] [description]
+    * [getReports List of URLS for reports in this account.]
+    * @return [array] [Returns reports for all of the forms. ie. Excel, CSV, printable charts, embeddable HTML tables.]
     */
     public function getReports(){
         return $this->_executeGetRequest("user/reports");
     }
 
     /**
-    * [getUserSettings description]
-    * @return [type]  [description]
+    * [getSettings Get user's settings for this account.]
+    * @return [array]  [Returns user's time zone and language.]
     */
     public function getSettings(){
         return $this->_executeGetRequest("user/settings");
     }
 
     /**
-    * [getUserHistory description]
-    * @return [type] [description]
+    * [getHistory Get user activity log.]
+    * @return [array] [Returns activity log about things like forms created/modified/deleted, account logins and other operations.]
     */
     public function getHistory(){
         return $this->_executeGetRequest("user/history");
     }
 
     /**
-     * [getForm description]
-     * @param  [type] $id [description]
-     * @return [type]     [description]
+     * [getForm Get basic information about a form.]
+     * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+     * @return [array] [Returns form id, status, update and creation dates, submission count etc.]
      */
     public function getForm($formID){
         return $this->_executeGetRequest("form/". $formID);
     }
 
     /**
-    * [getQuestionsByFormId description]
-    * @param  [type] $formID [description]
-    * @return [type]         [description]
+    * [getFormQuestions Get a list of all questions on a form.]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+    * @return [array] [Returns question properties of a form.]
     */
     public function getFormQuestions($formID){
         return $this->_executeGetRequest("form/".$formID."/questions");
     }
 
     /**
-    *[getQuestionByQuestionId description]
-    * @param [type] $formID [description]
-    * @param [type] $questionID [description]
-    * @return [type]     [description]
+    *[getFormQuestion Get details about a question]
+    * @param [integer] $formID [Form ID is the numbers you see on a form URL.]
+    * @param [integer] $qid [Identifier for each question on a form.]
+    * @return [array] [Returns question properties like required and validation.]
     */
     public function getFormQuestion($formID, $qid){
         return $this->_executeGetRequest("form/".$formID."/question/".$qid);
     }
 
     /**
-     * [getSubmissionsByFormId description]
-     * @param  [type] $formID [description]
-     * @return [type]         [description]
+     * [getFormSubmissions List of form reponses.]
+     * @param [integer] $formID [Form ID is the numbers you see on a form URL.]
+     * @param [int] $offset [Start of each result set for form list. (optional)]
+     * @param [int] $limit [Number of results in each result set for form list. (optional)]
+     * @param [array] $filter [Filters the query results to fetch a specific form range.(optional)]
+     * @param [string] $orderBy [Order results by a form field name. (optional)]
+     * @return [array] [Returns submissions of a specific form.]
      */
     public function getFormSubmissions($formID, $offset = 0, $limit = 0, $filter = null, $orderBy = null){
         $params = $this->createConditions($offset, $limit, $filter, $orderBy);
@@ -256,9 +264,10 @@ class JotForm {
     }
 
     /**
-     * [postSubmissionsByFormId description]
-     * @param  [type] $formID [description]
-     * @return [type]         [description]
+     * [createFormSubmissions Submit data to this form using the API.]
+     * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+     * @param [array] $submission [Submission data with question ids.]
+     * @return [array] [Returns posted submission id and URL.]
      */
     public function createFormSubmissions($formID, $submission){
         $sub = array();
@@ -277,91 +286,92 @@ class JotForm {
     }
 
     /**
-    * [getFilesByFormId description]
-    * @param  [type] $formID [decription]
-    * @return [type]         [decription]
+    * [getFormFiles List of files uploaded on a form.]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+    * @return [array] [Returns uploaded file information and URLs on a specific form.]
     */
     public function getFormFiles($formID){
         return $this->_executeGetRequest("form/".$formID."/files");
     }
 
     /**
-    * [getWebhooksByFormID description]
-    * @param  [type] $formID [description]
-    * @return [type]         [description]
+    * [getFormWebhooks Get list of webhooks for a form]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+    * @return [array] [Returns list of webhooks for this form.]
     */
     public function getFormWebhooks($formID){
         return $this->_executeGetRequest("form/".$formID."/webhooks");
     }
 
     /**
-    * [addWebhookToForm description]
-    * @param  [type] $formID [description]
-    * @return [type]         [description]
+    * [createFormWebhook Add a new webhook]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+    * @return [array] [Returns list of webhooks for this form.]
     */
     public function createFormWebhook($formID, $webhookURL){
         return $this->_executePostRequest("form/".$formID."/webhooks",array("webhookURL" => $webhookURL) );
     }
 
     /**
-    * [getUserSubmissionById description]
-    * @param  [type] $subId [description]
-    * @return [type]        [description]
+    * [getSubmission Get submission data]
+    * @param  [integer] $sid [You can get submission IDs when you call /form/{id}/submissions.]
+    * @return [array] [Returns information and answers of a specific submission.]
     */
     public function getSubmission($sid){
         return $this->_executeGetRequest("submission/".$sid);
     }
 
     /**
-    * [getUserReportById description]
-    * @param  [type] $subId [description]
-    * @return [type] [description]
+    * [getReport Get report details]
+    * @param  [integer] $reportID [You can get a list of reports from /user/reports.]
+    * @return [array] [Returns properties of a speceific report like fields and status.]
     */
     public function getReport($reportID){
         return $this->_executeGetRequest("report/".$reportID);
     }
 
     /**
-    * [getFolderById description]
-    * @param  [type] $folderID [description]
-    * @return [type] [description]
+    * [getFolder Get folder details]
+    * @param  [integer] $folderID [Get a list of folders from /user/folders]
+    * @return [array] [Returns a list of forms in a folder, and other details about the form such as folder color.]
     */
     public function getFolder($folderID) {
         return $this->_executeGetRequest("folder/".$folderID);
     }
 
     /**
-    * [getFormProperties description]
-    * @param  [type] $formID [description]
-    * @return [type] [description]
+    * [getFormProperties Get a list of all properties on a form.]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+    * @return [array] [Includes form properties like width, expiration date, style etc.]
     */
     public function getFormProperties($formID) {
         return $this->_executeGetRequest("form/".$formID."/properties");
     }
 
     /**
-    * [getFormProperty description]
-    * @param  [type] $formID [description]
-    * @param  [type] $propertyKey [description]
-    * @return [type] [description]
+    * [getFormProperty Get a specific property of the form.]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+    * @param  [string] $propertyKey [Property key]
+    * @return [array] [Returns given property key value.]
     */
     public function getFormProperty($formID, $propertyKey) {
         return $this->_executeGetRequest("form/".$formID."/properties/".$propertyKey);
     }
 
     /**
-    * [deleteSubmission description]
-    * @param  [type] $sid [description]
-    * @return [type] [description]
+    * [deleteSubmission Delete a single submission.]
+    * @param  [integer] $sid [You can get submission IDs when you call /user/submissions.]
+    * @return [array] [Returns status of request.]
     */
     public function deleteSubmission($sid) {
         return $this->_executeDeleteRequest("submission/".$sid);
     }
 
     /**
-    * [editSubmission description]
-    * @param  [type] $sid [description]
-    * @return [type] [description]
+    * [editSubmission Edit a single submission.]
+    * @param  [integer] $sid [description]
+    * @param [array] $submission [New submission data with question ids.]
+    * @return [array] [Returns status of request.]
     */
     public function editSubmission($sid, $submission) {
         $sub = array();
@@ -380,18 +390,19 @@ class JotForm {
     }
 
     /**
-    * [cloneForm description]
-    * @param  [type] $formID [description]
-    * @return [type] [description]
+    * [cloneForm Clone a single form.]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+    * @return [array] [Returns status of request.]
     */
     public function cloneForm($formID) {
         return $this->_executePostRequest("form/".$formID."/clone", null);
     }
 
     /**
-    * [deleteFormQuestion description]
-    * @param  [type] $formID [description]
-    * @return [type] [description]
+    * [deleteFormQuestion Delete a single form question.]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL.]
+    * @param [integer] $qid [Identifier for each question on a form.]
+    * @return [array] [Returns status of request.]
     */
     public function deleteFormQuestion($formID, $qid) {
         return $this->_executeDeleteRequest("form/".$formID."/question/".$qid, null);
