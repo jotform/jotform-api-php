@@ -136,7 +136,7 @@ class JotForm {
     }
 
     /**
-     * [getUser Get user account details for a JotForm user.]
+     * [getUser Get user account details for a JotForm user]
      * @return [array] [Returns user account type, avatar URL, name, email, website URL and account limits.]
      */
     public function getUser(){
@@ -145,7 +145,7 @@ class JotForm {
     }
 
     /**
-    * [getUserUsage Get number of form submissions received this month.]
+    * [getUserUsage Get number of form submissions received this month]
     * @return [array] [Returns number of submissions, number of SSL form submissions, payment form submissions and upload space used by user.]
     */
     public function getUsage(){
@@ -167,7 +167,7 @@ class JotForm {
     }
 
     /**
-     * [getSubmissions Get a list of submissions for this account.]
+     * [getSubmissions Get a list of submissions for this account]
      * @param [int] $offset [Start of each result set for form list. (optional)]
      * @param [int] $limit [Number of results in each result set for form list. (optional)]
      * @param [array] $filter [Filters the query results to fetch a specific form range.(optional)]
@@ -181,7 +181,7 @@ class JotForm {
     }
 
     /**
-    * [getUserSubusers Get a list of sub users for this account.]
+    * [getUserSubusers Get a list of sub users for this account]
     * @return [array] [Returns list of forms and form folders with access privileges.]
     */
     public function getSubusers(){
@@ -189,7 +189,7 @@ class JotForm {
     }
 
     /**
-    * [getUserFolders Get a list of form folders for this account.]
+    * [getUserFolders Get a list of form folders for this account]
     * @return [array] [Returns name of the folder and owner of the folder for shared folders.]
     */
     public function getFolders(){
@@ -197,7 +197,7 @@ class JotForm {
     }
 
     /**
-    * [getReports List of URLS for reports in this account.]
+    * [getReports List of URLS for reports in this account]
     * @return [array] [Returns reports for all of the forms. ie. Excel, CSV, printable charts, embeddable HTML tables.]
     */
     public function getReports(){
@@ -205,7 +205,7 @@ class JotForm {
     }
 
     /**
-    * [getSettings Get user's settings for this account.]
+    * [getSettings Get user's settings for this account]
     * @return [array]  [Returns user's time zone and language.]
     */
     public function getSettings(){
@@ -213,7 +213,7 @@ class JotForm {
     }
 
     /**
-    * [getHistory Get user activity log.]
+    * [getHistory Get user activity log]
     * @return [array] [Returns activity log about things like forms created/modified/deleted, account logins and other operations.]
     */
     public function getHistory(){
@@ -249,7 +249,7 @@ class JotForm {
     }
 
     /**
-     * [getFormSubmissions List of a form submissions.]
+     * [getFormSubmissions List of a form submissions]
      * @param [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
      * @param [int] $offset [Start of each result set for form list. (optional)]
      * @param [int] $limit [Number of results in each result set for form list. (optional)]
@@ -264,7 +264,7 @@ class JotForm {
     }
 
     /**
-     * [createFormSubmissions Submit data to this form using the API.]
+     * [createFormSubmissions Submit data to this form using the API]
      * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
      * @param [array] $submission [Submission data with question IDs.]
      * @return [array] [Returns posted submission ID and URL.]
@@ -286,7 +286,7 @@ class JotForm {
     }
 
     /**
-    * [getFormFiles List of files uploaded on a form.]
+    * [getFormFiles List of files uploaded on a form]
     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @return [array] [Returns uploaded file information and URLs on a specific form.]
     */
@@ -333,7 +333,7 @@ class JotForm {
 
     /**
     * [getFolder Get folder details]
-    * @param  [integer] $folderID [Get a list of folders from /user/folders.]
+    * @param  [integer] $folderID [You can get a list of folders from /user/folders.]
     * @return [array] [Returns a list of forms in a folder, and other details about the form such as folder color.]
     */
     public function getFolder($folderID) {
@@ -341,18 +341,18 @@ class JotForm {
     }
 
     /**
-    * [getFormProperties Get a list of all properties on a form.]
+    * [getFormProperties Get a list of all properties on a form]
     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
-    * @return [array] [Includes form properties like width, expiration date, style etc.]
+    * @return [array] [Returns form properties like width, expiration date, style etc.]
     */
     public function getFormProperties($formID) {
         return $this->_executeGetRequest("form/".$formID."/properties");
     }
 
     /**
-    * [getFormProperty Get a specific property of the form.]
+    * [getFormProperty Get a specific property of the form]
     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
-    * @param  [string] $propertyKey [Property key]
+    * @param  [string] $propertyKey [You can get property keys when you call /form/{id}/properties.]
     * @return [array] [Returns given property key value.]
     */
     public function getFormProperty($formID, $propertyKey) {
@@ -360,7 +360,7 @@ class JotForm {
     }
 
     /**
-    * [deleteSubmission Delete a single submission.]
+    * [deleteSubmission Delete a single submission]
     * @param  [integer] $sid [You can get submission IDs when you call /user/submissions.]
     * @return [array] [Returns status of request.]
     */
@@ -369,9 +369,9 @@ class JotForm {
     }
 
     /**
-    * [editSubmission Edit a single submission.]
+    * [editSubmission Edit a single submission]
     * @param  [integer] $sid [You can get submission IDs when you call /form/{id}/submissions.]
-    * @param [array] $submission [New submission data with question ids.]
+    * @param [array] $submission [New submission data with question IDs.]
     * @return [array] [Returns status of request.]
     */
     public function editSubmission($sid, $submission) {
