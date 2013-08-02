@@ -422,13 +422,13 @@ class JotForm {
     /**
     * [createFormQuestion Add new question to specified form]
     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
-    * @param [array] $questionProperties [New question properties like type and text.]
+    * @param [array] $question [New question properties like type and text.]
     * @return [array] [Returns properties of new question.]
     */
-    public function createFormQuestion($formID, $questions) {
+    public function createFormQuestion($formID, $question) {
         $params = array();
 
-        foreach ($questions as $key => $value) {
+        foreach ($question as $key => $value) {
             $params["question[".$key."]"] = $value; 
         }
 
@@ -436,9 +436,9 @@ class JotForm {
     }
 
     /**
-    * [createFormQuestions Add new question to specified form]
+    * [createFormQuestions Add new questions to specified form]
     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
-    * @param [json] $questionsProperties [New question properties like type and text.]
+    * @param [json] $questions [New question properties like type and text.]
     * @return [array] [Returns properties of new questions.]
     */
     public function createFormQuestions($formID, $questions) {
@@ -463,7 +463,7 @@ class JotForm {
     }
 
     /**
-    * [setFormProperties Edit properties of a specific form]
+    * [setFormProperties Add or edit properties of a specific form]
     * @param [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @param [array] $formProperties [New properties like label width.]
     * @return [array] [Returns edited properties.]
