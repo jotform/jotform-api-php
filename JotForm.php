@@ -22,6 +22,7 @@ class JotForm {
         $this->debugMode = $debugMode;
         $this->baseUrl = "http://api.jotform.com";
         $this->apiVersion = "v1";
+
     }
 
     private function _debugLog($str){
@@ -71,9 +72,14 @@ class JotForm {
             curl_setopt($ch,CURLOPT_POSTFIELDS, $params);
         }
 
+        if ($method=="PUT"){
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); 
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        }
+
         if ($method=="DELETE"){
             $this->_debugLog("delete");
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE" );
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
         }
 
         $result = curl_exec($ch);
@@ -115,6 +121,10 @@ class JotForm {
 
     private function _executePostRequest($url, $params){
         return $this->_executeHttpRequest($url, $params, "POST");
+    }
+
+    private function _executePutRequest($url, $params){
+        return $this->_executeHttpRequest($url, $params, "PUT");
     }
 
     private function _executeDeleteRequest($url, $params=array()){
@@ -391,7 +401,7 @@ class JotForm {
     }
 
     /**
-    * [cloneForm Clone a single form.]
+    * [cloneForm Clone a single form]
     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @return [array] [Returns status of request.]
     */
@@ -400,13 +410,100 @@ class JotForm {
     }
 
     /**
-    * [deleteFormQuestion Delete a single form question.]
+    * [deleteFormQuestion Delete a single form question]
     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @param [integer] $qid [Identifier for each question on a form. You can get a list of question IDs from /form/{id}/questions.]
     * @return [array] [Returns status of request.]
     */
     public function deleteFormQuestion($formID, $qid) {
         return $this->_executeDeleteRequest("form/".$formID."/question/".$qid, null);
+    }
+
+    /**
+    * [createFormQuestion Add new question to specified form]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
+    * @param [array] $questionProperties [New question properties like type and text.]
+    * @return [array] [Returns properties of new question.]
+    */
+    public function createFormQuestion($formID, $questions) {
+        $params = array();
+
+        foreach ($questions as $key => $value) {
+            $params["question[".$key."]"] = $value; 
+        }
+
+        return $this->_executePostRequest("form/".$formID."/questions", $params);
+    }
+
+    /**
+    * [createFormQuestions Add new question to specified form]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
+    * @param [json] $questionsProperties [New question properties like type and text.]
+    * @return [array] [Returns properties of new questions.]
+    */
+    public function createFormQuestions($formID, $questions) {
+        return $this->_executePutRequest("form/".$formID."/questions", $questions);
+    }
+
+    /**
+    * [editFormQuestion Edit a single question properties]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
+    * @param [integer] $qid [Identifier for each question on a form. You can get a list of question IDs from /form/{id}/questions.]
+    * @param [array] $questionProperties [New question properties like text and order.]
+    * @return [array] [Returns edited property and type of question.]
+    */
+    public function editFormQuestion($formID, $qid, $questionProperties) {
+        $question = array();
+
+        foreach ($questionProperties as $key => $value) {
+            $question["question[".$key."]"] = $value; 
+        }
+
+        return $this->_executePostRequest("form/".$formID."/question/".$qid, $question);
+    }
+
+    /**
+    * [setFormProperties Edit properties of a specific form]
+    * @param [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
+    * @param [array] $formProperties [New properties like label width.]
+    * @return [array] [Returns edited properties.]
+    */
+    public function setFormProperties($formID, $formProperties) {
+        $properties = array();
+
+        foreach ($formProperties as $key => $value) {
+            $properties["properties[".$key."]"] = $value;
+        }
+
+        return $this->_executePostRequest("form/".$formID."/properties", $properties);
+    }
+
+    /**
+    *[setMultipleFormProperties Add or edit properties of a specific form]
+    * @param [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
+    * @param [json] $formProperties [New properties like label width.]
+    * @return [array] [Returns edited properties.]
+    */
+    public function setMultipleFormProperties($formID, $formProperties) {
+        return $this->_executePutRequest("form/".$formID."/properties", $formProperties);
+    }
+
+    /**
+    * [createForm Create a new form]
+    * @param [json] $form [Questions, properties and emails fo new form.]
+    * @return [array] [Returns new form.]
+    */
+    public function createForm($form) {
+        return $this->_executePutRequest("user/forms", $form);
+    }
+
+    /**
+    * [deleteForm Delete a specific form]
+    * @param [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
+    * @return  [array] [Properties of deleted form.]
+    */
+    public function deleteForm($formID) {
+        return $this->_executeDeleteRequest("form/".$formID, null);
     }
 }
 
