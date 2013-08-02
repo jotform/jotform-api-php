@@ -446,7 +446,7 @@ class JotForm {
     }
 
     /**
-    * [editFormQuestion Edit a single question properties]
+    * [editFormQuestion Add or edit a single question properties]
     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @param [integer] $qid [Identifier for each question on a form. You can get a list of question IDs from /form/{id}/questions.]
     * @param [array] $questionProperties [New question properties like text and order.]
@@ -490,7 +490,7 @@ class JotForm {
 
     /**
     * [createForm Create a new form]
-    * @param [json] $form [Questions, properties and emails fo new form.]
+    * @param [json] $form [Questions, properties and emails of new form.]
     * @return [array] [Returns new form.]
     */
     public function createForm($form) {
