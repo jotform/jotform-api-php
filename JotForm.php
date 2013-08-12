@@ -145,6 +145,17 @@ class JotForm {
         return $params;
     }
 
+    private function createHistoryQuery($action, $date, $sortBy, $startDate, $endDate) {
+
+        foreach(array("action", "date", "sortBy", "startDate", "endDate") as $arg) {
+             if(${$arg}) {
+                 $params[$arg] = ${$arg};
+             }
+        }
+
+        return $params;
+    }
+
     /**
      * [getUser Get user account details for a JotForm user]
      * @return [array] [Returns user account type, avatar URL, name, email, website URL and account limits.]
@@ -224,10 +235,17 @@ class JotForm {
 
     /**
     * [getHistory Get user activity log]
+    * @param [enum] $action [Filter results by activity performed. Default is 'all'.]
+    * @param [enum] $date [Limit results by a date range. If you'd like to limit results by specific dates you can use startDate and endDate fields instead.]
+    * @param [enum] $sortBy [Lists results by ascending and descending order.]
+    * @param [string] $startDate [Limit results to only after a specific date. Format: MM/DD/YYYY.]
+    * @param [string] $endDate [Limit results to only before a specific date. Format: MM/DD/YYYY.]
     * @return [array] [Returns activity log about things like forms created/modified/deleted, account logins and other operations.]
     */
-    public function getHistory(){
-        return $this->_executeGetRequest("user/history");
+    public function getHistory($action = null, $date = null, $sortBy = null, $startDate = null, $endDate = null){
+        $params = $this->createHistoryQuery($action, $date, $sortBy, $startDate, $endDate);
+
+        return $this->_executeGetRequest("user/history", $params);
     }
 
     /**
@@ -396,7 +414,7 @@ class JotForm {
                 $sub["submission[".$key."]"] = $value;
             }
         }
-
+        
         return $this->_executePostRequest("submission/".$sid, $sub);
     }
 
@@ -500,7 +518,7 @@ class JotForm {
     /**
     * [deleteForm Delete a specific form]
     * @param [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
-    * @return  [array] [Properties of deleted form.]
+    * @return  [array] [Returns roperties of deleted form.]
     */
     public function deleteForm($formID) {
         return $this->_executeDeleteRequest("form/".$formID, null);
