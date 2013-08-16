@@ -92,8 +92,11 @@ class JotForm {
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $this->_debugLog("http code is : ".$http_status);
 
-        // TODO : check if output type is xml and return accordingly
-        $result_obj = json_decode($result,true);
+        if ($this->outputType == "json") {
+            $result_obj = json_decode($result, true);
+        } else {
+            $result_obj = utf8_decode($result);
+        }
 
         /*
          * Handle HTTP Errors
@@ -113,7 +116,11 @@ class JotForm {
 
         curl_close($ch);
 
-        return $result_obj["content"];
+        if ($this->outputType == "json") {
+            return $result_obj["content"];
+        } else {
+            return $result_obj;
+        } 
     }
 
     private function _executeGetRequest($url, $params=array()){
