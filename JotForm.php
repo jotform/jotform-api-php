@@ -10,8 +10,7 @@
  */
 class JotForm {
 
-
-    public function __construct($apiKey, $debugMode=false){
+    public function __construct($apiKey, $outputType="json", $debugMode=false){
 
         if (!$apiKey){
             throw new JotFormException("apiKey is required");
@@ -22,7 +21,7 @@ class JotForm {
         $this->debugMode = $debugMode;
         $this->baseUrl = "http://api.jotform.com";
         $this->apiVersion = "v1";
-
+        $this->outputType = $outputType;
     }
 
     private function _debugLog($str){
@@ -40,8 +39,11 @@ class JotForm {
     }
 
     private function _executeHttpRequest($path, $params=array(), $method){
+        if ($this->outputType != "json") {
+            $path = $path.".xml";
+        }
 
-        $url = implode("/", array($this->baseUrl, $this->apiVersion,$path));
+        $url = implode("/", array($this->baseUrl, $this->apiVersion, $path));
 
         $this->_debugDump($params);
 
@@ -54,7 +56,6 @@ class JotForm {
             unset($params_array);
             $url = $url.$params_string;
             $this->_debugLog("params string".$params_string);
-            
         }
 
         $this->_debugLog("fetching url : ".$url);
