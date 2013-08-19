@@ -141,6 +141,7 @@ class JotForm {
 
     private function createConditions($offset, $limit, $filter, $orderBy) {
 
+        $params = array();
         foreach(array("offset", "limit", "filter", "orderBy") as $arg) {
              if(${$arg}) {
                  $params[strtolower($arg)] = ${$arg};
