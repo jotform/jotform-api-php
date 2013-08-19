@@ -143,7 +143,7 @@ class JotForm {
 
         foreach(array("offset", "limit", "filter", "orderBy") as $arg) {
              if(${$arg}) {
-                 $params[$arg] = ${$arg};
+                 $params[strtolower($arg)] = ${$arg};
                  if($arg == "filter") {
                      $params[$arg] = json_encode($params[$arg]);
                  }
