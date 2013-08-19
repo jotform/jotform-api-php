@@ -21,7 +21,7 @@ class JotForm {
         $this->debugMode = $debugMode;
         $this->baseUrl = "http://api.jotform.com";
         $this->apiVersion = "v1";
-        $this->outputType = $outputType;
+        $this->outputType = strtolower($outputType);
     }
 
     private function _debugLog($str){
