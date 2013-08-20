@@ -521,7 +521,21 @@ class JotForm {
     * @return [array] [Returns new form.]
     */
     public function createForm($form) {
-        return $this->_executePostRequest("user/forms", $form);
+        $params = array();
+
+        foreach ($form as $key => $value) {
+            foreach ($value as $k => $v) {
+                if ($key == "properties") {
+                    $params[$key."[".$k."]"] = $v;
+                } else {
+                    foreach ($v as $a => $b) {
+                        $params[$key."[".$k."][".$a."]"] = $b;
+                    }
+                }
+            }
+        }
+
+        return $this->_executePostRequest("user/forms", $params);
     }
 
     /**
