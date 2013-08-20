@@ -516,11 +516,20 @@ class JotForm {
     }
 
     /**
+    * [createForm]
+    * @param [array] $form [Questions, properties and emails of new form.]
+    * @return [array] [Returns new form.]
+    */
+    public function createForm($form) {
+        return $this->_executePostRequest("user/forms", $form);
+    }
+
+    /**
     * [createForm Create a new form]
     * @param [json] $form [Questions, properties and emails of new form.]
     * @return [array] [Returns new form.]
     */
-    public function createForm($form) {
+    public function createForms($form) {
         return $this->_executePutRequest("user/forms", $form);
     }
 
