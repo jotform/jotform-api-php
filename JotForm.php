@@ -317,7 +317,7 @@ class JotForm {
      * @param [array] $submission [Submission data with question IDs.]
      * @return [array] [Returns posted submission ID and URL.]
      */
-    public function createFormSubmissions($formID, $submission){
+    public function createFormSubmission($formID, $submission){
         $sub = array();
 
         foreach ($submission as $key => $value) {
@@ -331,6 +331,16 @@ class JotForm {
         }
 
         return $this->_executePostRequest("form/". $formID ."/submissions", $sub);
+    }
+
+    /**
+    * [createFormSubmissions Submit data to this form using the API]
+    * @param [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
+    * @param [json] $submissions [Submission data with question IDs.]
+    * @return [array]
+    */
+    public function createFormSubmissions($formID, $submissions) {
+        return $this->_executePutRequest("form/".$formID."/submissions", $submissions);
     }
 
     /**
