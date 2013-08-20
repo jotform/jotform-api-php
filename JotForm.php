@@ -243,6 +243,15 @@ class JotForm {
     }
 
     /**
+    * [updateSettings]
+    * @param [array] $settings [New user setting values with setting keys]
+    * @return [array] [Returns changes on user settings]
+    */
+    public function updateSettings($settings) {
+        return $this->_executePostRequest("user/settings", $settings);
+    }
+
+    /**
     * [getHistory Get user activity log]
     * @param [enum] $action [Filter results by activity performed. Default is 'all'.]
     * @param [enum] $date [Limit results by a date range. If you'd like to limit results by specific dates you can use startDate and endDate fields instead.]
