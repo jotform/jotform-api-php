@@ -251,6 +251,8 @@ class JotForm {
         return $this->_executePostRequest("user/settings", $settings);
     }
 
+
+
     /**
     * [getHistory Get user activity log]
     * @param [enum] $action [Filter results by activity performed. Default is 'all'.]
@@ -357,6 +359,10 @@ class JotForm {
     */
     public function createFormWebhook($formID, $webhookURL){
         return $this->_executePostRequest("form/".$formID."/webhooks",array("webhookURL" => $webhookURL) );
+    }
+
+    public function deleteFormWebhook($formID, $webhookID) {
+        return $this->_executeDeleteRequest("form/".$formID."/webhooks/".$webhookID, null);
     }
 
     /**
