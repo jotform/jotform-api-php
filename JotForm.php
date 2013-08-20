@@ -361,6 +361,12 @@ class JotForm {
         return $this->_executePostRequest("form/".$formID."/webhooks",array("webhookURL" => $webhookURL) );
     }
 
+    /**
+    * [deleteFormWebhook] [Delete a specific webhook of a form.]
+    * @param [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
+    * @param [integer] $webhookID [You can get webhook IDs when you call /form/{formID}/webhooks.]
+    * @return [array] [Returns remaining webhook URLs of form.]
+    */
     public function deleteFormWebhook($formID, $webhookID) {
         return $this->_executeDeleteRequest("form/".$formID."/webhooks/".$webhookID, null);
     }
