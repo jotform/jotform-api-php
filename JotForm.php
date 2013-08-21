@@ -251,8 +251,6 @@ class JotForm {
         return $this->_executePostRequest("user/settings", $settings);
     }
 
-
-
     /**
     * [getHistory Get user activity log]
     * @param [enum] $action [Filter results by activity performed. Default is 'all'.]
@@ -547,7 +545,7 @@ class JotForm {
     }
 
     /**
-    * [createForm]
+    * [createForm Create a new form]
     * @param [array] $form [Questions, properties and emails of new form.]
     * @return [array] [Returns new form.]
     */
@@ -570,8 +568,8 @@ class JotForm {
     }
 
     /**
-    * [createForm Create a new form]
-    * @param [json] $form [Questions, properties and emails of new form.]
+    * [createForm Create new forms]
+    * @param [json] $form [Questions, properties and emails of forms.]
     * @return [array] [Returns new form.]
     */
     public function createForms($form) {
