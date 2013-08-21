@@ -243,7 +243,7 @@ class JotForm {
     }
 
     /**
-    * [updateSettings]
+    * [updateSettings Update user's settings]
     * @param [array] $settings [New user setting values with setting keys]
     * @return [array] [Returns changes on user settings]
     */
