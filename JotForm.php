@@ -19,7 +19,7 @@ class JotForm {
         $this->apiKey = $apiKey;
 
         $this->debugMode = $debugMode;
-        $this->baseUrl = "https://api.jotform.com";
+        $this->baseUrl = "http://api.jotform.com";
         $this->apiVersion = "v1";
         $this->outputType = strtolower($outputType);
     }
