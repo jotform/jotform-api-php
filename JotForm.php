@@ -10,11 +10,7 @@
  */
 class JotForm {
 
-    public function __construct($apiKey, $outputType="json", $debugMode=false){
-
-        if (!$apiKey){
-            throw new JotFormException("apiKey is required");
-        }
+    public function __construct($apiKey="", $outputType="json", $debugMode=false){
 
         $this->apiKey = $apiKey;
         $this->debugMode = $debugMode;
