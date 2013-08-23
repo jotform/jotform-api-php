@@ -587,6 +587,16 @@ class JotForm {
     public function deleteForm($formID) {
         return $this->_executeDeleteRequest("form/".$formID, null);
     }
+
+    /**
+    * [registerUser Register with username, password and email]
+    * @param [array] $userDetails [username, password and email to register a new user]
+    * @return [array] [Returns new user's details]
+    */
+    public function registerUser($userDetails) {
+        return $this->_executePostRequest("user/register", $userDetails);
+    }
+
 }
 
 class JotFormException extends Exception{}
