@@ -17,7 +17,6 @@ class JotForm {
         }
 
         $this->apiKey = $apiKey;
-
         $this->debugMode = $debugMode;
         $this->baseUrl = "http://api.jotform.com";
         $this->apiVersion = "v1";
@@ -104,14 +103,22 @@ class JotForm {
         
         if ($http_status != 200) {
 
-            if ($http_status == 401) {
-                throw new JotFormException("Unauthorized API call");
-            } else if ($http_status == 404) {
-                throw new JotFormException($result_obj["message"]);
-            } else if ($http_status == 503) {
-                throw new JotFormException("Service is unavailable, rate limits etc exceeded!");
+            switch ($http_status) {
+                case 400:
+                case 404:
+                    throw new JotFormException($result_obj["message"]);
+                break;
+                case 401:
+                    throw new JotFormException("Unauthorized API call");
+                break;
+                case 503:
+                    throw new JotFormException("Service is unavailable, rate limits etc exceeded!");
+                break;
+                
+                default:
+                    throw new JotFormException($result_obj["info"]);
+                break;
             }
-            throw new JotFormException($result_obj["info"]);
         }
 
         curl_close($ch);
