@@ -572,8 +572,8 @@ class JotForm {
     * @param [json] $form [Questions, properties and emails of forms.]
     * @return [array] [Returns new forms.]
     */
-    public function createForms($form) {
-        return $this->_executePutRequest("user/forms", $form);
+    public function createForms($forms) {
+        return $this->_executePutRequest("user/forms", $forms);
     }
 
     /**
