@@ -598,7 +598,7 @@ class JotForm {
     }
 
     /**
-    * [userLogin Login user with given credentials]
+    * [loginUser Login user with given credentials]
     * @param [array] $credentials [Username, password, application name and access type of user]
     * @return [array] [Returns logged in user's settings and app key.]
     */
