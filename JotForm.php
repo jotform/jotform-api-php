@@ -1,13 +1,13 @@
 <?
-
 /**
  * JotForm API - PHP Client
  *
  * @copyright   2013 Interlogy, LLC.
  * @link        http://www.jotform.com
- * @version     0.1
+ * @version     1.0
  * @package     JotFormAPI
  */
+
 class JotForm {
 
     public function __construct($apiKey="", $outputType="json", $debugMode=false){
