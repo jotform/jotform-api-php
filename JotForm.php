@@ -602,7 +602,7 @@ class JotForm {
     * @param [array] $credentials [Username, password, application name and access type of user]
     * @return [array] [Returns logged in user's settings and app key.]
     */
-    public function userLogin($credentials) {
+    public function loginUser($credentials) {
         return $this->_executePostRequest("user/login", $credentials);
     }
 
