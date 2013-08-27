@@ -14,7 +14,7 @@ class JotForm {
 
         $this->apiKey = $apiKey;
         $this->debugMode = $debugMode;
-        $this->baseUrl = "http://api.jotform.com";
+        $this->baseUrl = "https://api.jotform.com";
         $this->apiVersion = "v1";
         $this->outputType = strtolower($outputType);
     }
@@ -605,7 +605,6 @@ class JotForm {
     public function loginUser($credentials) {
         return $this->_executePostRequest("user/login", $credentials);
     }
-
 }
 
 class JotFormException extends Exception{}
