@@ -9,14 +9,18 @@
  */
 
 class JotForm {
+    private $apiKey;
+    private $debugMode;
+    private $outputType;
 
     public function __construct($apiKey="", $outputType="json", $debugMode=false){
 
         $this->apiKey = $apiKey;
         $this->debugMode = $debugMode;
-        $this->baseUrl = "https://api.jotform.com";
-        $this->apiVersion = "v1";
         $this->outputType = strtolower($outputType);
+
+        define("baseUrl", "https://api.jotform.com");
+        define("apiVersion", "v1");
     }
 
     private function _debugLog($str){
@@ -37,8 +41,8 @@ class JotForm {
         if ($this->outputType != "json") {
             $path = $path.".xml";
         }
-
-        $url = implode("/", array($this->baseUrl, $this->apiVersion, $path));
+        
+        $url = implode("/", array(baseUrl, apiVersion, $path));
 
         $this->_debugDump($params);
 
