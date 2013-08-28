@@ -24,11 +24,15 @@ class JotForm {
     }
 
     public function __get($prop) {
-        return $this->$prop;
+        if (property_exists($this, $property)) {
+            return $this->$property;
+        }
     }
 
     public function __set($prop, $value) {
-        $this->$prop = $value;
+        if (property_exists($this, $property)) {
+            $this->$property = $value;
+        }
     }
 
     private function _debugLog($str){
