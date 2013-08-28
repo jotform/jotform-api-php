@@ -23,6 +23,14 @@ class JotForm {
         define("apiVersion", "v1");
     }
 
+    public function __get($prop) {
+        return $this->$prop;
+    }
+
+    public function __set($prop, $value) {
+        $this->$prop = $value;
+    }
+
     private function _debugLog($str){
         if ($this->debugMode){
             print_r("\n");
@@ -41,7 +49,7 @@ class JotForm {
         if ($this->outputType != "json") {
             $path = $path.".xml";
         }
-        
+
         $url = implode("/", array(baseUrl, apiVersion, $path));
 
         $this->_debugDump($params);
@@ -96,10 +104,6 @@ class JotForm {
         } else {
             $result_obj = utf8_decode($result);
         }
-
-        /*
-         * Handle HTTP Errors
-         */
         
         if ($http_status != 200) {
 
