@@ -414,15 +414,6 @@ class JotForm {
 
     /**
     * [getFolder Get folder details]
-    * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
-    * @return [array] [Returns a list of reports in a form, and other details about the reports such as title.]
-    */
-    public function getFormReports($formID){
-        return $this->_executeGetRequest("form/".$formID."/reports");
-    }
-
-    /**
-    * [getFolder Get folder details]
     * @param  [integer] $folderID [You can get a list of folders from /user/folders.]
     * @return [array] [Returns a list of forms in a folder, and other details about the form such as folder color.]
     */
@@ -447,6 +438,15 @@ class JotForm {
     */
     public function getFormProperty($formID, $propertyKey) {
         return $this->_executeGetRequest("form/".$formID."/properties/".$propertyKey);
+    }
+
+    /**
+    * [getFormReports Get all reports from a specific form]
+    * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
+    * @return [array] [Returns a list of reports in a form, and other details about the reports such as title.]
+    */
+    public function getFormReports($formID){
+        return $this->_executeGetRequest("form/".$formID."/reports");
     }
 
     /**
