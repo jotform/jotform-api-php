@@ -441,7 +441,7 @@ class JotForm {
     }
 
     /**
-    * [getFormReports Get all reports from a specific form]
+    * [getFormReports Get all the reports of a form, such as excel, csv, grid, html, etc.]
     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @return [array] [Returns a list of reports in a form, and other details about the reports such as title.]
     */
