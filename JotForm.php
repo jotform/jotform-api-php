@@ -626,6 +626,15 @@ class JotForm {
     public function loginUser($credentials) {
         return $this->_executePostRequest("user/login", $credentials);
     }
+
+    /**
+    * [getPlan Get details of a plan]
+    * @param [string] $planName [Name of the requested plan. FREE, PREMIUM etc.]
+    * @return [array] [Returns details of a plan]
+    */
+    public function getPlan($planName) {
+        return $this->_executeGetRequest("system/plan/".$planName);
+    }
 }
 
 class JotFormException extends Exception{}
