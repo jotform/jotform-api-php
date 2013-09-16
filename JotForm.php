@@ -450,6 +450,16 @@ class JotForm {
     }
 
     /**
+    * [createReport Create new report of a form]
+    * @param [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
+    * @param [array] $report [Report details. List type, title etc.]
+    * @return [array] [Returns report details and URL.]
+    */
+    public function createReport($formID, $report) {
+        return $this->_executePostRequest("form/".$formID."/reports", $report);
+    }
+
+    /**
     * [deleteSubmission Delete a single submission]
     * @param  [integer] $sid [You can get submission IDs when you call /user/submissions.]
     * @return [array] [Returns status of request.]
