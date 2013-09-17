@@ -154,10 +154,10 @@ class JotForm {
         return $this->_executeHttpRequest($url, $params, "DELETE");
     }
 
-    private function createConditions($offset, $limit, $filter, $orderBy) {
+    private function createConditions($offset, $limit, $filter, $orderby) {
 
         $params = array();
-        foreach(array("offset", "limit", "filter", "orderBy") as $arg) {
+        foreach(array("offset", "limit", "filter", "orderby") as $arg) {
              if(${$arg}) {
                  $params[strtolower($arg)] = ${$arg};
                  if($arg == "filter") {
@@ -205,8 +205,8 @@ class JotForm {
      * @param [string] $orderBy [Order results by a form field name. (optional)]
      * @return [array] [Returns basic details such as title of the form, when it was created, number of new and total submissions.]
      */
-    public function getForms($offset = 0, $limit = 0, $filter = null, $orderBy = null){
-        $params = $this->createConditions($offset, $limit, $filter, $orderBy);
+    public function getForms($offset = 0, $limit = 0, $filter = null, $orderby = null){
+        $params = $this->createConditions($offset, $limit, $filter, $orderby);
 
         return $this->_executeGetRequest("user/forms", $params);
     }
@@ -219,8 +219,8 @@ class JotForm {
      * @param [string] $orderBy [Order results by a form field name. (optional)]
      * @return [array] [Returns basic details such as title of the form, when it was created, number of new and total submissions.]
      */
-    public function getSubmissions($offset = 0, $limit = 0, $filter = null, $orderBy = null){
-        $params = $this->createConditions($offset, $limit, $filter, $orderBy);
+    public function getSubmissions($offset = 0, $limit = 0, $filter = null, $orderby = null){
+        $params = $this->createConditions($offset, $limit, $filter, $orderby);
 
         return $this->_executeGetRequest("user/submissions", $params);
     }
@@ -318,8 +318,8 @@ class JotForm {
      * @param [string] $orderBy [Order results by a form field name. (optional)]
      * @return [array] [Returns submissions of a specific form.]
      */
-    public function getFormSubmissions($formID, $offset = 0, $limit = 0, $filter = null, $orderBy = null){
-        $params = $this->createConditions($offset, $limit, $filter, $orderBy);
+    public function getFormSubmissions($formID, $offset = 0, $limit = 0, $filter = null, $orderby = null){
+        $params = $this->createConditions($offset, $limit, $filter, $orderby);
 
         return $this->_executeGetRequest("form/". $formID ."/submissions", $params);
     }
