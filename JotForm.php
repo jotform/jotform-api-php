@@ -478,7 +478,7 @@ class JotForm {
         $sub = array();
 
         foreach ($submission as $key => $value) {
-            if (strpos($key, "_")) {
+            if (strpos($key, "_") && $key != "created_at") {
                 $qid = substr($key, 0, strpos($key, "_"));
                 $type = substr($key, strpos($key, "_") + 1);
                 $sub["submission[$qid][$type]"] = $value;
