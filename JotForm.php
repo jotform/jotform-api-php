@@ -108,7 +108,7 @@ class JotForm {
         } else {
             $result_obj = utf8_decode($result);
         }
-        
+
         if ($http_status != 200) {
 
             switch ($http_status) {
@@ -635,6 +635,14 @@ class JotForm {
     */
     public function loginUser($credentials) {
         return $this->_executePostRequest("user/login", $credentials);
+    }
+
+    /**
+    * [logoutUser Logout User]
+    * @return [array] [Status of request]
+    */
+    public function logoutUser() {
+        return $this->_executeGetRequest("user/logout");
     }
 
     /**
