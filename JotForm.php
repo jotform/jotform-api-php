@@ -23,13 +23,13 @@ class JotForm {
         define("apiVersion", "v1");
     }
 
-    public function __get($prop) {
+    public function __get($property) {
         if (property_exists($this, $property)) {
             return $this->$property;
         }
     }
 
-    public function __set($prop, $value) {
+    public function __set($property, $value) {
         if (property_exists($this, $property)) {
             $this->$property = $value;
         }
