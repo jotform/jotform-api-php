@@ -8,6 +8,9 @@
  * @package     JotFormAPI
  */
 
+const JOTFORM_BASE_URL = "https://api.jotform.com";
+const JOTFORM_API_VERSION = "v1";
+
 class JotForm {
     private $apiKey;
     private $debugMode;
@@ -18,9 +21,6 @@ class JotForm {
         $this->apiKey = $apiKey;
         $this->debugMode = $debugMode;
         $this->outputType = strtolower($outputType);
-
-        define("baseUrl", "https://api.jotform.com");
-        define("apiVersion", "v1");
     }
 
     public function __get($prop) {
@@ -54,7 +54,7 @@ class JotForm {
             $path = $path.".xml";
         }
 
-        $url = implode("/", array(baseUrl, apiVersion, $path));
+        $url = implode("/", array(JOTFORM_BASE_URL, JOTFORM_API_VERSION, $path));
 
         $this->_debugDump($params);
 
