@@ -8,6 +8,9 @@
  * @package     JotFormAPI
  */
 
+const JOTFORM_BASE_URL = "https://api.jotform.com";
+const JOTFORM_API_VERSION = "v1";
+
 class JotForm {
     private $apiKey;
     private $debugMode;
@@ -18,9 +21,6 @@ class JotForm {
         $this->apiKey = $apiKey;
         $this->debugMode = $debugMode;
         $this->outputType = strtolower($outputType);
-
-        define("baseUrl", "https://api.jotform.com");
-        define("apiVersion", "v1");
     }
 
     public function __get($property) {
@@ -54,7 +54,7 @@ class JotForm {
             $path = $path.".xml";
         }
 
-        $url = implode("/", array(baseUrl, apiVersion, $path));
+        $url = implode("/", array(JOTFORM_BASE_URL, JOTFORM_API_VERSION, $path));
 
         $this->_debugDump($params);
 
@@ -114,17 +114,17 @@ class JotForm {
             switch ($http_status) {
                 case 400:
                 case 404:
-                    throw new JotFormException($result_obj["message"]);
+                    throw new JotFormException($result_obj["message"], $http_status);
                 break;
                 case 401:
-                    throw new JotFormException("Unauthorized API call");
+                    throw new JotFormException("Unauthorized API call", $http_status);
                 break;
                 case 503:
-                    throw new JotFormException("Service is unavailable, rate limits etc exceeded!");
+                    throw new JotFormException("Service is unavailable, rate limits etc exceeded!", $http_status);
                 break;
                 
                 default:
-                    throw new JotFormException($result_obj["info"]);
+                    throw new JotFormException($result_obj["info"], $http_status);
                 break;
             }
         }
