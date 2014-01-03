@@ -12,15 +12,15 @@ class JotForm {
     private $apiKey;
     private $debugMode;
     private $outputType;
+    private $baseURL = "https://api.jotform.com";
+    private $apiVersion = "v1";
 
     public function __construct($apiKey="", $outputType="json", $debugMode=false){
 
         $this->apiKey = $apiKey;
         $this->debugMode = $debugMode;
         $this->outputType = strtolower($outputType);
-
-        define("baseUrl", "https://api.jotform.com");
-        define("apiVersion", "v1");
+        
     }
 
     public function __get($property) {
@@ -54,7 +54,7 @@ class JotForm {
             $path = $path.".xml";
         }
 
-        $url = implode("/", array(baseUrl, apiVersion, $path));
+        $url = implode("/", array($this->baseURL, $this->apiVersion, $path));
 
         $this->_debugDump($params);
 
