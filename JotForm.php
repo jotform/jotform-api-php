@@ -114,17 +114,17 @@ class JotForm {
             switch ($http_status) {
                 case 400:
                 case 404:
-                    throw new JotFormException($result_obj["message"]);
+                    throw new JotFormException($http_status . " " . $result_obj["message"] );
                 break;
                 case 401:
-                    throw new JotFormException("Unauthorized API call");
+                    throw new JotFormException($http_status . " Unauthorized API call");
                 break;
                 case 503:
-                    throw new JotFormException("Service is unavailable, rate limits etc exceeded!");
+                    throw new JotFormException($http_status . " Service is unavailable, rate limits etc exceeded!");
                 break;
                 
                 default:
-                    throw new JotFormException($result_obj["info"]);
+                    throw new JotFormException($http_status . " " . $result_obj["info"]);
                 break;
             }
         }
