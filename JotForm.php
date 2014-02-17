@@ -77,6 +77,7 @@ class JotForm {
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
         curl_setopt($ch,CURLOPT_USERAGENT,"JOTFORM_PHP_WRAPPER");
         curl_setopt($ch,CURLOPT_HTTPHEADER, array('APIKEY: '.$this->apiKey));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         if ($method=="POST"){
             $this->_debugLog("posting");
