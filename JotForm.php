@@ -98,7 +98,7 @@ class JotForm {
         $result = curl_exec($ch);
 
         if ($result == false){
-            throw new Exception('Unable to');
+            throw new Exception('Unable to',400);
         }
 
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -115,17 +115,17 @@ class JotForm {
             switch ($http_status) {
                 case 400:
                 case 404:
-                    throw new JotFormException($http_status . " " . $result_obj["message"] );
+                    throw new JotFormException($result_obj["message"], $http_status );
                 break;
                 case 401:
-                    throw new JotFormException($http_status . " Unauthorized API call");
+                    throw new JotFormException("Unauthorized API call", $http_status);
                 break;
                 case 503:
-                    throw new JotFormException($http_status . " Service is unavailable, rate limits etc exceeded!");
+                    throw new JotFormException("Service is unavailable, rate limits etc exceeded!", $http_status);
                 break;
                 
                 default:
-                    throw new JotFormException($http_status . " " . $result_obj["info"]);
+                    throw new JotFormException($result_obj["info"], $http_status);
                 break;
             }
         }
