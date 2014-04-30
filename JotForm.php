@@ -654,6 +654,15 @@ class JotForm {
     public function getPlan($planName) {
         return $this->_executeGetRequest("system/plan/".$planName);
     }
+
+    /**
+    * [deleteReport Delete a specific report]
+    * @param [integer] $formID [$reportID [You can get a list of reports from /user/reports.]
+    * @return  [array] [Returns status of request.]
+    */
+    public function deleteReport($reportID) {
+        return $this->_executeDeleteRequest("report/".$reportID, null);
+    }
 }
 
 class JotFormException extends Exception{}
