@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * JotForm API - PHP Client
  *
