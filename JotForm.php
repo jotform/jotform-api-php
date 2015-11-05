@@ -20,7 +20,7 @@ class JotForm {
         $this->apiKey = $apiKey;
         $this->debugMode = $debugMode;
         $this->outputType = strtolower($outputType);
-        
+
     }
 
     public function __get($property) {
@@ -86,7 +86,7 @@ class JotForm {
         }
 
         if ($method=="PUT"){
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); 
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
             curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
         }
 
@@ -123,7 +123,7 @@ class JotForm {
                 case 503:
                     throw new JotFormException("Service is unavailable, rate limits etc exceeded!", $http_status);
                 break;
-                
+
                 default:
                     throw new JotFormException($result_obj["info"], $http_status);
                 break;
@@ -136,7 +136,7 @@ class JotForm {
             return $result_obj["content"];
         } else {
             return $result_obj;
-        } 
+        }
     }
 
     private function _executeGetRequest($url, $params=array()){
@@ -487,7 +487,7 @@ class JotForm {
                 $sub["submission[".$key."]"] = $value;
             }
         }
-        
+
         return $this->_executePostRequest("submission/".$sid, $sub);
     }
 
@@ -520,7 +520,7 @@ class JotForm {
         $params = array();
 
         foreach ($question as $key => $value) {
-            $params["question[".$key."]"] = $value; 
+            $params["question[".$key."]"] = $value;
         }
 
         return $this->_executePostRequest("form/".$formID."/questions", $params);
@@ -547,7 +547,7 @@ class JotForm {
         $question = array();
 
         foreach ($questionProperties as $key => $value) {
-            $question["question[".$key."]"] = $value; 
+            $question["question[".$key."]"] = $value;
         }
 
         return $this->_executePostRequest("form/".$formID."/question/".$qid, $question);
