@@ -9,10 +9,10 @@
  */
 
 class JotForm {
+    public $baseURL = "https://api.jotform.com";
     private $apiKey;
     private $debugMode;
     private $outputType;
-    private $baseURL = "https://api.jotform.com";
     private $apiVersion = "v1";
 
     public function __construct($apiKey="", $outputType="json", $debugMode=false){
