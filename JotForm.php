@@ -133,7 +133,11 @@ class JotForm {
         curl_close($ch);
 
         if ($this->outputType == "json") {
-            return $result_obj["content"];
+            if (isset($result_obj['content'])) {
+                return $result_obj['content'];
+            } else {
+                return $result_obj;
+            }
         } else {
             return $result_obj;
         }
