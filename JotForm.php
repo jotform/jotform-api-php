@@ -98,7 +98,7 @@ class JotForm {
         $result = curl_exec($ch);
 
         if ($result == false){
-            throw new Exception('Unable to',400);
+            throw new Exception(curl_error($ch), 400);
         }
 
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
