@@ -114,11 +114,12 @@ class JotForm {
 
             switch ($http_status) {
                 case 400:
+                case 403:
                 case 404:
                     throw new JotFormException($result_obj["message"], $http_status );
                 break;
                 case 401:
-                    throw new JotFormException("Unauthorized API call", $http_status);
+                    throw new JotFormException("Invalid API key or Unauthorized API call", $http_status);
                 break;
                 case 503:
                     throw new JotFormException("Service is unavailable, rate limits etc exceeded!", $http_status);
