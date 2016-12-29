@@ -650,4 +650,4 @@ class JotForm {
     }
 }
 
-class JotFormException extends Exception{}
+class JotFormException extends Exception {}
