@@ -79,7 +79,7 @@ class JotForm {
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('APIKEY: '.$this->apiKey));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-        switch ($method)
+        switch ($method) {
             case 'POST':
                 $this->_debugLog('posting');
                 curl_setopt($ch, CURLOPT_POST, true);
