@@ -9,13 +9,13 @@
  */
 
 class JotForm {
-    public $baseURL = "https://api.jotform.com";
+    public $baseURL = 'https://api.jotform.com';
     private $apiKey;
     private $debugMode;
     private $outputType;
-    private $apiVersion = "v1";
+    private $apiVersion = 'v1';
 
-    public function __construct($apiKey="", $outputType="json", $debugMode=false){
+    public function __construct($apiKey = '', $outputType = 'json', $debugMode = false) {
 
         $this->apiKey = $apiKey;
         $this->debugMode = $debugMode;
@@ -35,76 +35,76 @@ class JotForm {
         }
     }
 
-    private function _debugLog($str){
+    private function _debugLog($str) {
         if ($this->debugMode){
-            print_r("\n");
+            print_r(PHP_EOL);
             print_r($str);
         }
     }
 
-    private function _debugDump($obj){
+    private function _debugDump($obj) {
         if ($this->debugMode){
-            print_r("\n");
+            print_r(PHP_EOL);
             var_dump($obj);
         }
     }
 
-    private function _executeHttpRequest($path, $params=array(), $method){
-        if ($this->outputType != "json") {
-            $path = $path.".xml";
+    private function _executeHttpRequest($path, $params = array(), $method) {
+        if ($this->outputType != 'json') {
+            $path = "{$path}.xml";
         }
 
-        $url = implode("/", array($this->baseURL, $this->apiVersion, $path));
+        $url = implode('/', array($this->baseURL, $this->apiVersion, $path));
 
         $this->_debugDump($params);
 
-        if ($method=="GET" && $params != null){
+        if ($method == 'GET' && $params != null){
             $params_array = array();
             foreach ($params as $key => $value) {
-                $params_array[] = $key ."=". $value;
+                $params_array[] = "{$key}={$value}";
             }
-            $params_string = "?" . implode("&",$params_array);
+            $params_string = '?' . implode('&', $params_array);
             unset($params_array);
             $url = $url.$params_string;
-            $this->_debugLog("params string".$params_string);
+            $this->_debugLog('params string: '.$params_string);
         }
 
-        $this->_debugLog("fetching url : ".$url);
+        $this->_debugLog('fetching url: '.$url);
 
         $ch = curl_init();
 
-        curl_setopt($ch,CURLOPT_URL, $url);
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch,CURLOPT_USERAGENT,"JOTFORM_PHP_WRAPPER");
-        curl_setopt($ch,CURLOPT_HTTPHEADER, array('APIKEY: '.$this->apiKey));
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'JOTFORM_PHP_WRAPPER');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('APIKEY: '.$this->apiKey));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-        if ($method=="POST"){
-            $this->_debugLog("posting");
-            curl_setopt($ch,CURLOPT_POST, true);
-            curl_setopt($ch,CURLOPT_POSTFIELDS, $params);
-        }
-
-        if ($method=="PUT"){
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-        }
-
-        if ($method=="DELETE"){
-            $this->_debugLog("delete");
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        switch ($method)
+            case 'POST':
+                $this->_debugLog('posting');
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+            break;
+            case 'PUT':
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+            break;
+            case 'DELETE':
+                $this->_debugLog('delete');
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+            break;
         }
 
         $result = curl_exec($ch);
 
-        if ($result == false){
+        if ($result == false) {
             throw new Exception(curl_error($ch), 400);
         }
 
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $this->_debugLog("http code is : ".$http_status);
+        $this->_debugLog('http code is: '.$http_status);
 
-        if ($this->outputType == "json") {
+        if ($this->outputType == 'json') {
             $result_obj = json_decode($result, true);
         } else {
             $result_obj = utf8_decode($result);
@@ -133,7 +133,7 @@ class JotForm {
 
         curl_close($ch);
 
-        if ($this->outputType == "json") {
+        if ($this->outputType == 'json') {
             if (isset($result_obj['content'])) {
                 return $result_obj['content'];
             } else {
@@ -144,45 +144,41 @@ class JotForm {
         }
     }
 
-    private function _executeGetRequest($url, $params=array()){
-        return $this->_executeHttpRequest($url, $params, "GET");
+    private function _executeGetRequest($url, $params = array()) {
+        return $this->_executeHttpRequest($url, $params, 'GET');
     }
 
-    private function _executePostRequest($url, $params){
-        return $this->_executeHttpRequest($url, $params, "POST");
+    private function _executePostRequest($url, $params) {
+        return $this->_executeHttpRequest($url, $params, 'POST');
     }
 
-    private function _executePutRequest($url, $params){
-        return $this->_executeHttpRequest($url, $params, "PUT");
+    private function _executePutRequest($url, $params) {
+        return $this->_executeHttpRequest($url, $params, 'PUT');
     }
 
-    private function _executeDeleteRequest($url, $params=array()){
-        return $this->_executeHttpRequest($url, $params, "DELETE");
+    private function _executeDeleteRequest($url, $params = array()) {
+        return $this->_executeHttpRequest($url, $params, 'DELETE');
     }
 
     private function createConditions($offset, $limit, $filter, $orderby) {
-
         $params = array();
-        foreach(array("offset", "limit", "filter", "orderby") as $arg) {
-             if(${$arg}) {
+        foreach (array('offset', 'limit', 'filter', 'orderby') as $arg) {
+             if (${$arg}) {
                  $params[strtolower($arg)] = ${$arg};
-                 if($arg == "filter") {
+                 if ($arg == "filter") {
                      $params[$arg] = json_encode($params[$arg]);
                  }
              }
         }
-
         return $params;
     }
 
     private function createHistoryQuery($action, $date, $sortBy, $startDate, $endDate) {
-
-        foreach(array("action", "date", "sortBy", "startDate", "endDate") as $arg) {
-             if(${$arg}) {
+        foreach (array('action', 'date', 'sortBy', 'startDate', 'endDate') as $arg) {
+             if (${$arg}) {
                  $params[$arg] = ${$arg};
              }
         }
-
         return $params;
     }
 
@@ -190,8 +186,8 @@ class JotForm {
      * [getUser Get user account details for a JotForm user]
      * @return [array] [Returns user account type, avatar URL, name, email, website URL and account limits.]
      */
-    public function getUser(){
-        $res = $this->_executeGetRequest("user");
+    public function getUser() {
+        $res = $this->_executeGetRequest('user');
         return $res;
     }
 
@@ -200,7 +196,7 @@ class JotForm {
     * @return [array] [Returns number of submissions, number of SSL form submissions, payment form submissions and upload space used by user.]
     */
     public function getUsage(){
-        return $this->_executeGetRequest("user/usage");
+        return $this->_executeGetRequest('user/usage');
     }
 
     /**
@@ -211,10 +207,9 @@ class JotForm {
      * @param [string] $orderBy [Order results by a form field name. (optional)]
      * @return [array] [Returns basic details such as title of the form, when it was created, number of new and total submissions.]
      */
-    public function getForms($offset = 0, $limit = 0, $filter = null, $orderby = null){
+    public function getForms($offset = 0, $limit = 0, $filter = null, $orderby = null) {
         $params = $this->createConditions($offset, $limit, $filter, $orderby);
-
-        return $this->_executeGetRequest("user/forms", $params);
+        return $this->_executeGetRequest('user/forms', $params);
     }
 
     /**
@@ -225,42 +220,41 @@ class JotForm {
      * @param [string] $orderBy [Order results by a form field name. (optional)]
      * @return [array] [Returns basic details such as title of the form, when it was created, number of new and total submissions.]
      */
-    public function getSubmissions($offset = 0, $limit = 0, $filter = null, $orderby = null){
+    public function getSubmissions($offset = 0, $limit = 0, $filter = null, $orderby = null) {
         $params = $this->createConditions($offset, $limit, $filter, $orderby);
-
-        return $this->_executeGetRequest("user/submissions", $params);
+        return $this->_executeGetRequest('user/submissions', $params);
     }
 
     /**
     * [getUserSubusers Get a list of sub users for this account]
     * @return [array] [Returns list of forms and form folders with access privileges.]
     */
-    public function getSubusers(){
-        return $this->_executeGetRequest("user/subusers");
+    public function getSubusers() {
+        return $this->_executeGetRequest('user/subusers');
     }
 
     /**
     * [getUserFolders Get a list of form folders for this account]
     * @return [array] [Returns name of the folder and owner of the folder for shared folders.]
     */
-    public function getFolders(){
-        return $this->_executeGetRequest("user/folders");
+    public function getFolders() {
+        return $this->_executeGetRequest('user/folders');
     }
 
     /**
     * [getReports List of URLS for reports in this account]
     * @return [array] [Returns reports for all of the forms. ie. Excel, CSV, printable charts, embeddable HTML tables.]
     */
-    public function getReports(){
-        return $this->_executeGetRequest("user/reports");
+    public function getReports() {
+        return $this->_executeGetRequest('user/reports');
     }
 
     /**
     * [getSettings Get user's settings for this account]
     * @return [array]  [Returns user's time zone and language.]
     */
-    public function getSettings(){
-        return $this->_executeGetRequest("user/settings");
+    public function getSettings() {
+        return $this->_executeGetRequest('user/settings');
     }
 
     /**
@@ -269,7 +263,7 @@ class JotForm {
     * @return [array] [Returns changes on user settings]
     */
     public function updateSettings($settings) {
-        return $this->_executePostRequest("user/settings", $settings);
+        return $this->_executePostRequest('user/settings', $settings);
     }
 
     /**
@@ -281,10 +275,9 @@ class JotForm {
     * @param [string] $endDate [Limit results to only before a specific date. Format: MM/DD/YYYY.]
     * @return [array] [Returns activity log about things like forms created/modified/deleted, account logins and other operations.]
     */
-    public function getHistory($action = null, $date = null, $sortBy = null, $startDate = null, $endDate = null){
+    public function getHistory($action = null, $date = null, $sortBy = null, $startDate = null, $endDate = null) {
         $params = $this->createHistoryQuery($action, $date, $sortBy, $startDate, $endDate);
-
-        return $this->_executeGetRequest("user/history", $params);
+        return $this->_executeGetRequest('user/history', $params);
     }
 
     /**
@@ -292,8 +285,8 @@ class JotForm {
      * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
      * @return [array] [Returns form ID, status, update and creation dates, submission count etc.]
      */
-    public function getForm($formID){
-        return $this->_executeGetRequest("form/". $formID);
+    public function getForm($formID) {
+        return $this->_executeGetRequest('form/'. $formID);
     }
 
     /**
@@ -301,8 +294,8 @@ class JotForm {
     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @return [array] [Returns question properties of a form.]
     */
-    public function getFormQuestions($formID){
-        return $this->_executeGetRequest("form/".$formID."/questions");
+    public function getFormQuestions($formID) {
+        return $this->_executeGetRequest("form/{$formID}/questions");
     }
 
     /**
@@ -311,8 +304,8 @@ class JotForm {
     * @param [integer] $qid [Identifier for each question on a form. You can get a list of question IDs from /form/{id}/questions.]
     * @return [array] [Returns question properties like required and validation.]
     */
-    public function getFormQuestion($formID, $qid){
-        return $this->_executeGetRequest("form/".$formID."/question/".$qid);
+    public function getFormQuestion($formID, $qid) {
+        return $this->_executeGetRequest("form/{$formID}/question/{$qid}");
     }
 
     /**
@@ -324,10 +317,9 @@ class JotForm {
      * @param [string] $orderBy [Order results by a form field name. (optional)]
      * @return [array] [Returns submissions of a specific form.]
      */
-    public function getFormSubmissions($formID, $offset = 0, $limit = 0, $filter = null, $orderby = null){
+    public function getFormSubmissions($formID, $offset = 0, $limit = 0, $filter = null, $orderby = null) {
         $params = $this->createConditions($offset, $limit, $filter, $orderby);
-
-        return $this->_executeGetRequest("form/". $formID ."/submissions", $params);
+        return $this->_executeGetRequest("form/{$formID}/submissions", $params);
     }
 
     /**
@@ -336,20 +328,18 @@ class JotForm {
      * @param [array] $submission [Submission data with question IDs.]
      * @return [array] [Returns posted submission ID and URL.]
      */
-    public function createFormSubmission($formID, $submission){
+    public function createFormSubmission($formID, $submission) {
         $sub = array();
-
         foreach ($submission as $key => $value) {
-            if (strpos($key, "_")) {
-                $qid = substr($key, 0, strpos($key, "_"));
-                $type = substr($key, strpos($key, "_") + 1);
-                $sub["submission[$qid][$type]"] = $value;
+            if (strpos($key, '_')) {
+                $qid = substr($key, 0, strpos($key, '_'));
+                $type = substr($key, strpos($key, '_') + 1);
+                $sub["submission[{$qid}][{$type}]"] = $value;
             } else {
-                $sub["submission[".$key."]"] = $value;
+                $sub["submission[{$key}]"] = $value;
             }
         }
-
-        return $this->_executePostRequest("form/". $formID ."/submissions", $sub);
+        return $this->_executePostRequest("form/{$formID}/submissions", $sub);
     }
 
     /**
@@ -367,8 +357,8 @@ class JotForm {
     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @return [array] [Returns uploaded file information and URLs on a specific form.]
     */
-    public function getFormFiles($formID){
-        return $this->_executeGetRequest("form/".$formID."/files");
+    public function getFormFiles($formID) {
+        return $this->_executeGetRequest("form/{$formID}/files");
     }
 
     /**
@@ -376,8 +366,8 @@ class JotForm {
     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @return [array] [Returns list of webhooks for a specific form.]
     */
-    public function getFormWebhooks($formID){
-        return $this->_executeGetRequest("form/".$formID."/webhooks");
+    public function getFormWebhooks($formID) {
+        return $this->_executeGetRequest("form/{$formID}/webhooks");
     }
 
     /**
@@ -386,8 +376,8 @@ class JotForm {
     * @param [string] $webhookURL [Webhook URL is where form data will be posted when form is submitted.]
     * @return [array] [Returns list of webhooks for a specific form.]
     */
-    public function createFormWebhook($formID, $webhookURL){
-        return $this->_executePostRequest("form/".$formID."/webhooks",array("webhookURL" => $webhookURL) );
+    public function createFormWebhook($formID, $webhookURL) {
+        return $this->_executePostRequest("form/{$formID}/webhooks", array('webhookURL' => $webhookURL) );
     }
 
     /**
@@ -397,7 +387,7 @@ class JotForm {
     * @return [array] [Returns remaining webhook URLs of form.]
     */
     public function deleteFormWebhook($formID, $webhookID) {
-        return $this->_executeDeleteRequest("form/".$formID."/webhooks/".$webhookID, null);
+        return $this->_executeDeleteRequest("form/{$formID}/webhooks/{$webhookID}", null);
     }
 
     /**
@@ -405,8 +395,8 @@ class JotForm {
     * @param  [integer] $sid [You can get submission IDs when you call /form/{id}/submissions.]
     * @return [array] [Returns information and answers of a specific submission.]
     */
-    public function getSubmission($sid){
-        return $this->_executeGetRequest("submission/".$sid);
+    public function getSubmission($sid) {
+        return $this->_executeGetRequest("submission/{$sid}");
     }
 
     /**
@@ -414,8 +404,8 @@ class JotForm {
     * @param  [integer] $reportID [You can get a list of reports from /user/reports.]
     * @return [array] [Returns properties of a speceific report like fields and status.]
     */
-    public function getReport($reportID){
-        return $this->_executeGetRequest("report/".$reportID);
+    public function getReport($reportID) {
+        return $this->_executeGetRequest("report/{$reportID}");
     }
 
     /**
@@ -424,7 +414,7 @@ class JotForm {
     * @return [array] [Returns a list of forms in a folder, and other details about the form such as folder color.]
     */
     public function getFolder($folderID) {
-        return $this->_executeGetRequest("folder/".$folderID);
+        return $this->_executeGetRequest("folder/{$folderID}");
     }
 
     /**
@@ -433,7 +423,7 @@ class JotForm {
     * @return [array] [Returns form properties like width, expiration date, style etc.]
     */
     public function getFormProperties($formID) {
-        return $this->_executeGetRequest("form/".$formID."/properties");
+        return $this->_executeGetRequest("form/{$formID}/properties");
     }
 
     /**
@@ -443,7 +433,7 @@ class JotForm {
     * @return [array] [Returns given property key value.]
     */
     public function getFormProperty($formID, $propertyKey) {
-        return $this->_executeGetRequest("form/".$formID."/properties/".$propertyKey);
+        return $this->_executeGetRequest("form/{$formID}/properties/{$propertyKey}");
     }
 
     /**
@@ -451,8 +441,8 @@ class JotForm {
     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @return [array] [Returns a list of reports in a form, and other details about the reports such as title.]
     */
-    public function getFormReports($formID){
-        return $this->_executeGetRequest("form/".$formID."/reports");
+    public function getFormReports($formID) {
+        return $this->_executeGetRequest("form/{$formID}/reports");
     }
 
     /**
@@ -462,7 +452,7 @@ class JotForm {
     * @return [array] [Returns report details and URL.]
     */
     public function createReport($formID, $report) {
-        return $this->_executePostRequest("form/".$formID."/reports", $report);
+        return $this->_executePostRequest("form/{$formID}/reports", $report);
     }
 
     /**
@@ -471,7 +461,7 @@ class JotForm {
     * @return [array] [Returns status of request.]
     */
     public function deleteSubmission($sid) {
-        return $this->_executeDeleteRequest("submission/".$sid);
+        return $this->_executeDeleteRequest("submission/{$sid}");
     }
 
     /**
@@ -482,17 +472,15 @@ class JotForm {
     */
     public function editSubmission($sid, $submission) {
         $sub = array();
-
         foreach ($submission as $key => $value) {
-            if (strpos($key, "_") && $key != "created_at") {
-                $qid = substr($key, 0, strpos($key, "_"));
-                $type = substr($key, strpos($key, "_") + 1);
-                $sub["submission[$qid][$type]"] = $value;
+            if (strpos($key, '_') && $key != 'created_at') {
+                $qid = substr($key, 0, strpos($key, '_'));
+                $type = substr($key, strpos($key, '_') + 1);
+                $sub["submission[{$qid}][{$type}]"] = $value;
             } else {
-                $sub["submission[".$key."]"] = $value;
+                $sub["submission[{$key}]"] = $value;
             }
         }
-
         return $this->_executePostRequest("submission/".$sid, $sub);
     }
 
@@ -502,7 +490,7 @@ class JotForm {
     * @return [array] [Returns status of request.]
     */
     public function cloneForm($formID) {
-        return $this->_executePostRequest("form/".$formID."/clone", null);
+        return $this->_executePostRequest("form/{$formID}/clone", null);
     }
 
     /**
@@ -512,7 +500,7 @@ class JotForm {
     * @return [array] [Returns status of request.]
     */
     public function deleteFormQuestion($formID, $qid) {
-        return $this->_executeDeleteRequest("form/".$formID."/question/".$qid, null);
+        return $this->_executeDeleteRequest("form/{$formID}/question/{$qid}", null);
     }
 
     /**
@@ -523,12 +511,10 @@ class JotForm {
     */
     public function createFormQuestion($formID, $question) {
         $params = array();
-
         foreach ($question as $key => $value) {
-            $params["question[".$key."]"] = $value;
+            $params["question[{$key}]"] = $value;
         }
-
-        return $this->_executePostRequest("form/".$formID."/questions", $params);
+        return $this->_executePostRequest("form/{$formID}/questions", $params);
     }
 
     /**
@@ -538,7 +524,7 @@ class JotForm {
     * @return [array] [Returns properties of new questions.]
     */
     public function createFormQuestions($formID, $questions) {
-        return $this->_executePutRequest("form/".$formID."/questions", $questions);
+        return $this->_executePutRequest("form/{$formID}/questions", $questions);
     }
 
     /**
@@ -550,12 +536,10 @@ class JotForm {
     */
     public function editFormQuestion($formID, $qid, $questionProperties) {
         $question = array();
-
         foreach ($questionProperties as $key => $value) {
-            $question["question[".$key."]"] = $value;
+            $question["question[{$key}]"] = $value;
         }
-
-        return $this->_executePostRequest("form/".$formID."/question/".$qid, $question);
+        return $this->_executePostRequest("form/{$formID}/question/{$qid}", $question);
     }
 
     /**
@@ -566,12 +550,10 @@ class JotForm {
     */
     public function setFormProperties($formID, $formProperties) {
         $properties = array();
-
         foreach ($formProperties as $key => $value) {
-            $properties["properties[".$key."]"] = $value;
+            $properties["properties[{$key}]"] = $value;
         }
-
-        return $this->_executePostRequest("form/".$formID."/properties", $properties);
+        return $this->_executePostRequest("form/{$formID}/properties", $properties);
     }
 
     /**
@@ -581,7 +563,7 @@ class JotForm {
     * @return [array] [Returns edited properties.]
     */
     public function setMultipleFormProperties($formID, $formProperties) {
-        return $this->_executePutRequest("form/".$formID."/properties", $formProperties);
+        return $this->_executePutRequest("form/{$formID}/properties", $formProperties);
     }
 
     /**
@@ -591,20 +573,18 @@ class JotForm {
     */
     public function createForm($form) {
         $params = array();
-
         foreach ($form as $key => $value) {
             foreach ($value as $k => $v) {
                 if ($key == "properties") {
-                    $params[$key."[".$k."]"] = $v;
+                    $params["{$key}[{$k}]"] = $v;
                 } else {
                     foreach ($v as $a => $b) {
-                        $params[$key."[".$k."][".$a."]"] = $b;
+                        $params["{$key}[{$k}][{$a}]"] = $b;
                     }
                 }
             }
         }
-
-        return $this->_executePostRequest("user/forms", $params);
+        return $this->_executePostRequest('user/forms', $params);
     }
 
     /**
@@ -613,7 +593,7 @@ class JotForm {
     * @return [array] [Returns new forms.]
     */
     public function createForms($forms) {
-        return $this->_executePutRequest("user/forms", $forms);
+        return $this->_executePutRequest('user/forms', $forms);
     }
 
     /**
@@ -622,7 +602,7 @@ class JotForm {
     * @return  [array] [Returns roperties of deleted form.]
     */
     public function deleteForm($formID) {
-        return $this->_executeDeleteRequest("form/".$formID, null);
+        return $this->_executeDeleteRequest("form/{$formID}", null);
     }
 
     /**
@@ -631,7 +611,7 @@ class JotForm {
     * @return [array] [Returns new user's details]
     */
     public function registerUser($userDetails) {
-        return $this->_executePostRequest("user/register", $userDetails);
+        return $this->_executePostRequest('user/register', $userDetails);
     }
 
     /**
@@ -640,7 +620,7 @@ class JotForm {
     * @return [array] [Returns logged in user's settings and app key.]
     */
     public function loginUser($credentials) {
-        return $this->_executePostRequest("user/login", $credentials);
+        return $this->_executePostRequest('user/login', $credentials);
     }
 
     /**
@@ -648,7 +628,7 @@ class JotForm {
     * @return [array] [Status of request]
     */
     public function logoutUser() {
-        return $this->_executeGetRequest("user/logout");
+        return $this->_executeGetRequest('user/logout');
     }
 
     /**
@@ -657,7 +637,7 @@ class JotForm {
     * @return [array] [Returns details of a plan]
     */
     public function getPlan($planName) {
-        return $this->_executeGetRequest("system/plan/".$planName);
+        return $this->_executeGetRequest("system/plan/{$planName}");
     }
 
     /**
@@ -666,7 +646,7 @@ class JotForm {
     * @return  [array] [Returns status of request.]
     */
     public function deleteReport($reportID) {
-        return $this->_executeDeleteRequest("report/".$reportID, null);
+        return $this->_executeDeleteRequest("report/{$reportID}", null);
     }
 }
 
