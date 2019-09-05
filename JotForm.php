@@ -170,7 +170,7 @@ class JotForm {
              if (${$arg}) {
                  $params[strtolower($arg)] = ${$arg};
                  if ($arg == "filter") {
-                     $params[$arg] = json_encode($params[$arg]);
+                     $params[$arg] = urlEncode(json_encode($params[$arg]));
                  }
              }
         }
