@@ -15,15 +15,20 @@ class JotForm {
     private $outputType;
     private $apiVersion = 'v1';
 
-    public function __construct($apiKey = '', $outputType = 'json', $debugMode = false) {
+    public function __construct($apiKey = '', $outputType = 'json', $debugMode = false, $hipaaSupport = false) {
 
         $this->apiKey = $apiKey;
         $this->debugMode = $debugMode;
         $this->outputType = strtolower($outputType);
-        $user = $this->getUser();
-        # set base url for EU users
-        if (isset($user['euOnly'])) {
-            $this->baseURL = 'https://eu-api.jotform.com';
+
+        if ($hipaaSupport) {
+            $this->baseURL = 'https://hipaa-api.jotform.com';
+        } else {
+            $user = $this->getUser();
+            # set base url for EU users
+            if (isset($user['euOnly'])) {
+                $this->baseURL = 'https://eu-api.jotform.com';
+            }
         }
     }
 
