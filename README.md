@@ -35,6 +35,18 @@ JotForm API requires API key for all user related calls. You can create your API
 
 ### Examples
 
+Create a new instance of JotForm client
+
+```php
+<?php
+    
+    include "jotform-api-php/JotForm.php";
+    
+    $jotformAPI = new JotForm("YOUR API KEY", $outputType = 'json', $debugMode = false, $hipaaSupport = false);
+
+?>
+```
+
 Print all forms of the user
     
 ```php
