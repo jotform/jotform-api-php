@@ -3,157 +3,153 @@ jotform-api-php
 [JotForm API](http://api.jotform.com/docs/) - PHP Client
 
 
-### Installation
+## Installation
 
-Install via git clone:
-
-        $ git clone git://github.com/jotform/jotform-api-php.git
-        $ cd jotform-api-php
+1- Install via [Composer](http://getcomposer.org/)
         
-or
-
-Install via Composer package manager (http://getcomposer.org/)
-        
-_composer.json_
-```json
-    {
-        "require": {
-            "jotform/jotform-api-php": "dev-master"
-        }
-    }
+```
+$ composer require jotform/jotform-api-php 
+```
+and add following line to your php file:
+```php 
+require "vendor/autoload.php";
 ```
 
-        $ php composer.phar install
+2- Install and use manually:
+```
+$ git clone https://github.com/jotform/jotform-api-php.git
+```
+and add following line to your php file:
+```php 
+require "jotform-api-php/Jotform.php";
+```
+If you install the package into another directory, you should update path for `require` command above.
 
-### Documentation
 
-You can find the docs for the API of this client at [http://api.jotform.com/docs/](http://api.jotform.com/docs)
+## Documentation
 
-### Authentication
+You can find the docs for the API of this client at [Jotform API Documentation](http://api.jotform.com/docs).
 
-JotForm API requires API key for all user related calls. You can create your API Keys at  [API section](http://www.jotform.com/myaccount/api) of My Account page.
+## Authentication
 
-### Examples
+JotForm API requires API key for all user related calls. You can create your API Keys at [API section](http://www.jotform.com/myaccount/api) of My Account page.
 
-Print all forms of the user
-    
+## Examples
+
+1- Print all forms of the user:
 ```php
 <?php
     
-    include "jotform-api-php/JotForm.php";
-    
-    $jotformAPI = new JotForm("YOUR API KEY");
-    $forms = $jotformAPI->getForms();
-    
-    foreach ($forms as $form) {
-        print $form["title"];
-    }
+require "vendor/autoload.php";
 
-?>
-```  
-Get submissions of the latest form
-    
+use Jotform\Jotform;
+use Jotform\JotformClient;
+
+$client = new JotformClient("<YOUR_API_KEY>");
+$jotform = new Jotform($client);
+
+$forms = $jotform->user()->forms();
+foreach ($forms->toArray() as $form) {
+    echo $form["title"] . PHP_EOL;
+}
+``` 
+
+2- Get submissions of the latest form: 
 ```php
 <?php
-    
-    try {
-        include "jotform-api-php/JotForm.php";
-        
-        $jotformAPI = new JotForm("YOUR API KEY");
 
-        $forms = $jotformAPI->getForms(0, 1, null, null);
+require 'vendor/autoload.php';
 
-        $latestForm = $forms[0];
+use Jotform\Jotform;
+use Jotform\JotformClient;
 
-        $latestFormID = $latestForm["id"];
+try {
+    $client = new JotformClient('<YOUR_API_KEY>');
+    $jotform = new Jotform($client);
 
-        $submissions = $jotformAPI->getFormSubmissions($latestFormID);
+    $forms = $jotform->user()->forms()->toArray();
+    $latestForm = $forms[0];
+    $latestFormId = $latestForm['id'];
 
-        var_dump($submissions);
-
-    }
-    catch (Exception $e) {
-        var_dump($e->getMessage());
-    }
-    
-?>
+    $submissions = $jotform->form($latestFormId)->getSubmissions();
+    var_dump($submissions);
+}
+catch (Exception $e) {
+    var_dump($e->getMessage());
+}
 ```
 
-Get latest 100 submissions ordered by creation date
-    
+3- Get latest 100 submissions ordered by creation date:
 ```php
-<?php
-    
-    try {
-        include "jotform-api-php/JotForm.php";
-        
-        $jotformAPI = new JotForm("YOUR API KEY");
 
-        $submissions = $jotformAPI->getSubmissions(0, 100, null, "created_at");
+require 'vendor/autoload.php';
 
-        var_dump($submissions);
-    }
-    catch (Exception $e) {
-        var_dump($e->getMessage());
-    }
-    
-?>
+use Jotform\Jotform;
+use Jotform\JotformClient;
+
+try {    
+    $client = new JotformClient('<YOUR_API_KEY>');
+    $jotform = new Jotform($client);
+
+    $submissions = $jotform->user()->limit(100)->orderBy('created_at')->submissions();
+    var_dump($submissions);
+} catch (Exception $e) {
+    var_dump($e->getMessage());
+}
 ```   
 
-Submission and form filter examples
-    
+4- Submission and form filter examples:
 ```php
-<?php
 
-    try {
-        include "jotform-api-php/JotForm.php";
-        
-        $jotformAPI = new JotForm("YOUR API KEY");
-        
-        $filter = array(
-                "id:gt" => "239252191641336722",
-                "created_at:gt" => "2013-07-09 07:48:34",
-        );
-        
-        $subs = $jotformAPI->getSubmissions(0, 0, $filter, "");
-        var_dump($subs); 
-        
-        $filter = array(
-                "id:gt" => "239176717911737253",
-        );
-        
-        $formSubs = $jotformAPI->getForms(0, 0, 2, $filter);
-        var_dump($formSubs);
-    } catch (Exception $e) {
-            var_dump($e->getMessage());
-    }
+require 'vendor/autoload.php';
+
+use Jotform\Jotform;
+use Jotform\JotformClient;
+
+try {
+    $client = new JotformClient('<YOUR_API_KEY>');
+    $jotform = new Jotform($client);
     
-?>
+    $filter = [
+        "id:gt" => "239252191641336722",
+        "created_at:gt" => "2013-07-09 07:48:34",
+    ];
+
+    $submissions = $jotform->user()->filter($filter)->submissions();
+    var_dump($submissions); 
+    
+    $filter = [
+        "id:gt" => "239176717911737253",
+    ];
+    
+    $forms = $jotform->user()->filter($filter)->forms();
+    var_dump($forms);
+} catch (Exception $e) {
+    var_dump($e->getMessage());
+}
 ```    
 
-Delete last 50 submissions
-
+5- Delete last 50 submissions:
 ```php
-<?php
-    
-    try {
-        include "jotform-api-php/JotForm.php";
-        
-        $jotformAPI = new JotForm("YOUR API KEY");
 
-        $submissions = $jotformAPI->getSubmissions(0, 50, null, null);
+require 'vendor/autoload.php';
 
-        foreach ($submissions as $submission) {
-            $result = $jotformAPI->deleteSubmission($submission["id"]);
-            print $result;
-        }
+use Jotform\Jotform;
+use Jotform\JotformClient;
+
+try {
+    $client = new JotformClient('<YOUR_API_KEY>');
+    $jotform = new Jotform($client);
+
+    $submissions = $jotform->user()->limit(50)->orderBy('created_at')->submissions();
+    foreach ($submissions->toArray() as $submission) {
+        $result = $jotform->submission($submission["id"])->delete();
+        echo $result . PHP_EOL;
     }
-    catch (Exception $e) {
-        var_dump($e->getMessage());
-    }
-    
-?>
-```    
-    
-First the _JotForm_ class is included from the _jotform-api-php/JotForm.php_ file. This class provides access to JotForm's API. You have to create an API client instance with your API key. 
-In case of an exception (wrong authentication etc.), you can catch it or let it fail with a fatal error.
+}
+catch (Exception $e) {
+    var_dump($e->getMessage());
+}
+```
+---
+Jotform
