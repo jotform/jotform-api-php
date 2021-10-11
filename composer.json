@@ -1,18 +1,32 @@
 {
     "name": "jotform/jotform-api-php",
-    "version" : "1.0.0-dev",
     "license": "GPL-3.0+",
-    "homepage": "http://api.jotform.com",
+    "homepage": "https://api.jotform.com",
     "support": {
         "email": "api@jotform.com",
-        "wiki": "http://api.jotform.com"
+        "wiki": "https://api.jotform.com"
     },
     "require": {
-        "php": ">=5.3.0"
+        "php": "^7.3|^8.0",
+        "ext-curl": "*"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
-        "classmap": [
-            "JotForm.php"
-        ]
+        "psr-4": {
+            "Jotform\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "coverage": "vendor/bin/phpunit --coverage-html coverage",
+        "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes"
     }
 }
