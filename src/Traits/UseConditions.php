@@ -4,9 +4,16 @@ namespace Jotform\Traits;
 
 trait UseConditions
 {
+    /** @var int */
     private $offset;
+
+    /** @var int */
     private $limit;
+
+    /** @var array */
     private $filter;
+
+    /** @var string */
     private $orderBy;
 
     public function offset(int $offset): self
@@ -25,7 +32,7 @@ trait UseConditions
 
     public function filter(array $filter): self
     {
-        $this->filter = urlencode(json_encode($filter));
+        $this->filter = $filter;
 
         return $this;
     }
@@ -40,6 +47,22 @@ trait UseConditions
     protected function getConditions()
     {
         $conditions = [];
+
+        if ($this->offset) {
+            $conditions['offset'] = $this->offset;
+        }
+
+        if ($this->limit) {
+            $conditions['limit'] = $this->limit;
+        }
+
+        if ($this->filter) {
+            $conditions['filter'] = urlencode(json_encode($this->filter));
+        }
+
+        if ($this->orderBy) {
+            $conditions['orderby'] = $this->orderBy;
+        }
 
         return $conditions;
     }
