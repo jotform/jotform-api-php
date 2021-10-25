@@ -117,13 +117,13 @@ class JotformClient
      * @param string        $method  Request Method
      * @param string        $path    Request Path/URL
      * @param array|string  $params  Data Array or JSON string
-     * @return JotformResponse
+     * @return              JotformResponse
      */
     protected function prepareAndSendRequest(string $method, string $path, $params = []): JotformResponse
     {
         $method = strtoupper($method);
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->normalizeRequestUrl($path, $method));
+        curl_setopt($ch, CURLOPT_URL, $this->normalizeRequestUrl($path, $method, $params));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_USERAGENT, 'JOTFORM_PHP_WRAPPER');
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->prepareRequestHeaders($params));
@@ -131,7 +131,7 @@ class JotformClient
 
         if (in_array($method, ['POST', 'PUT', 'DELETE'])) {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-            if (! empty($params)) {
+            if (!empty($params)) {
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
             }
         }
@@ -202,18 +202,24 @@ class JotformClient
         return $headers;
     }
 
-    private function normalizeRequestUrl(string $path, string $method): string
+    /**
+     * @param string        $path
+     * @param string        $method
+     * @param array|string  $params
+     * @return              string
+     */
+    private function normalizeRequestUrl(string $path, string $method, $params): string
     {
         $server = $this->europeOnly ? 'eu-api' : 'api';
         $segments = [
             "https://{$server}.jotform.com",
-            // 'v' . self::API_VERSION,
+            'v' . self::API_VERSION,
             $path . ($this->outputType === self::OUTPUT_JSON ? '' : '.xml'),
         ];
 
         $url = implode('/', $segments);
 
-        return $method === 'GET' && ! empty($params)
+        return $method === 'GET' && is_array($params) && !empty($params)
             ? "{$url}?" . http_build_query($params)
             : $url;
     }
