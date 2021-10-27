@@ -1,6 +1,6 @@
 jotform-api-php 
 ===============
-[JotForm API](http://api.jotform.com/docs/) - PHP Client
+[Jotform API](http://api.jotform.com/docs/) - PHP Client
 
 
 ## Installation
@@ -12,7 +12,7 @@ $ composer require jotform/jotform-api-php
 ```
 and add following line to your php file:
 ```php 
-require "vendor/autoload.php";
+require 'vendor/autoload.php';
 ```
 
 2- Install and use manually:
@@ -21,7 +21,7 @@ $ git clone https://github.com/jotform/jotform-api-php.git
 ```
 and add following line to your php file:
 ```php 
-require "jotform-api-php/Jotform.php";
+require 'jotform-api-php/Jotform.php';
 ```
 If you install the package into another directory, you should update path for `require` command above.
 
@@ -32,7 +32,7 @@ You can find the docs for the API of this client at [Jotform API Documentation](
 
 ## Authentication
 
-JotForm API requires API key for all user related calls. You can create your API Keys at [API section](http://www.jotform.com/myaccount/api) of My Account page.
+Jotform API requires API key for all user related calls. You can create your API Keys at [API section](http://www.jotform.com/myaccount/api) of My Account page.
 
 ## Examples
 
@@ -40,17 +40,17 @@ JotForm API requires API key for all user related calls. You can create your API
 ```php
 <?php
     
-require "vendor/autoload.php";
+require 'vendor/autoload.php';
 
 use Jotform\Jotform;
 use Jotform\JotformClient;
 
-$client = new JotformClient("<YOUR_API_KEY>");
+$client = new JotformClient('<YOUR_API_KEY>');
 $jotform = new Jotform($client);
 
 $forms = $jotform->user()->forms();
 foreach ($forms->toArray() as $form) {
-    echo $form["title"] . PHP_EOL;
+    echo $form['title'] . PHP_EOL;
 }
 ``` 
 
@@ -111,15 +111,15 @@ try {
     $jotform = new Jotform($client);
     
     $filter = [
-        "id:gt" => "239252191641336722",
-        "created_at:gt" => "2013-07-09 07:48:34",
+        'id:gt' => '239252191641336722',
+        'created_at:gt' => '2013-07-09 07:48:34',
     ];
 
     $submissions = $jotform->user()->filter($filter)->submissions();
     var_dump($submissions); 
     
     $filter = [
-        "id:gt" => "239176717911737253",
+        'id:gt' => '239176717911737253',
     ];
     
     $forms = $jotform->user()->filter($filter)->forms();
@@ -143,7 +143,7 @@ try {
 
     $submissions = $jotform->user()->limit(50)->orderBy('created_at')->submissions();
     foreach ($submissions->toArray() as $submission) {
-        $result = $jotform->submission($submission["id"])->delete();
+        $result = $jotform->submission($submission['id'])->delete();
         echo $result . PHP_EOL;
     }
 }
