@@ -2,8 +2,6 @@
 
 namespace Jotform\Services;
 
-use Jotform\JotformResponse;
-
 class System extends Service
 {
     /** @var string */

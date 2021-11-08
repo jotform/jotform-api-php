@@ -2,7 +2,6 @@
 
 namespace Jotform\Services;
 
-use Jotform\JotformResponse;
 use Jotform\Traits\UseConditions;
 use Jotform\Traits\UseQuery;
 
