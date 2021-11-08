@@ -24,12 +24,12 @@ class Report extends Service
         return $this->reportId;
     }
 
-    public function get(): JotformResponse
+    public function get(): ?array
     {
         return $this->client->get("{$this->name}/{$this->reportId}");
     }
 
-    public function delete(): JotformResponse
+    public function delete(): ?array
     {
         return $this->client->delete("{$this->name}/{$this->reportId}");
     }

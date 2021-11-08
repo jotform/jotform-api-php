@@ -1,6 +1,6 @@
 <?php
 /**
- * JotForm API - PHP Client
+ * Jotform API - PHP Client
  *
  * @copyright   2021 Jotform, LLC.
  * @link        https://www.jotform.com

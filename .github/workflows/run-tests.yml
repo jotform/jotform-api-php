@@ -35,3 +35,5 @@ jobs:
 
       - name: Execute tests
         run: composer test
+        env:
+          JOTFORM_API_KEY: ${{ secrets.JOTFORM_API_KEY }}

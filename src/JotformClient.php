@@ -26,6 +26,9 @@ class JotformClient
     /** @var bool */
     private $debug;
 
+    /** @var JotformResponse */
+    public $response;
+
     public function __construct(string $apiKey, string $outputType = self::OUTPUT_JSON, bool $debug = false)
     {
         $this->apiKey = $apiKey;
@@ -68,47 +71,47 @@ class JotformClient
         return $this->debugMode;
     }
 
-    public function get(string $path, array $params = []): JotformResponse
+    public function get(string $path, array $params = []): ?array
     {
         return $this->request('get', $path, $params);
     }
 
-    public function post(string $path, array $params = []): JotformResponse
+    public function post(string $path, array $params = []): ?array
     {
         return $this->request('post', $path, $params);
     }
 
-    public function put(string $path, array $params = []): JotformResponse
+    public function put(string $path, array $params = []): ?array
     {
         return $this->request('put', $path, $params);
     }
 
-    public function delete(string $path, array $params = []): JotformResponse
+    public function delete(string $path, array $params = []): ?array
     {
         return $this->request('delete', $path, $params);
     }
 
-    public function postJson(string $path, string $params = ''): JotformResponse
+    public function postJson(string $path, string $params = ''): ?array
     {
         return $this->requestJson('post', $path, $params);
     }
 
-    public function putJson(string $path, string $params = ''): JotformResponse
+    public function putJson(string $path, string $params = ''): ?array
     {
         return $this->requestJson('put', $path, $params);
     }
 
-    public function deleteJson(string $path, string $params = ''): JotformResponse
+    public function deleteJson(string $path, string $params = ''): ?array
     {
         return $this->requestJson('delete', $path, $params);
     }
 
-    protected function request(string $method, string $path, array $params = []): JotformResponse
+    protected function request(string $method, string $path, array $params = []): ?array
     {
         return $this->prepareAndSendRequest($method, $path, $params);
     }
 
-    protected function requestJson(string $method, string $path, string $params = ''): JotformResponse
+    protected function requestJson(string $method, string $path, string $params = ''): ?array
     {
         return $this->prepareAndSendRequest($method, $path, $params);
     }
@@ -117,9 +120,9 @@ class JotformClient
      * @param string        $method  Request Method
      * @param string        $path    Request Path/URL
      * @param array|string  $params  Data Array or JSON string
-     * @return              JotformResponse
+     * @return              array|null
      */
-    protected function prepareAndSendRequest(string $method, string $path, $params = []): JotformResponse
+    protected function prepareAndSendRequest(string $method, string $path, $params = []): ?array
     {
         $method = strtoupper($method);
         $ch = curl_init();
@@ -182,7 +185,8 @@ class JotformClient
             $response = $response['content'] ?? $response;
         }
 
-        return new JotformResponse($response, $statusCode, $response["message"] ?? null);
+        $this->response = new JotformResponse($response, $statusCode, $response["message"] ?? null);
+        return $response;
     }
 
     /**

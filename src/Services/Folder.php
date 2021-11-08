@@ -24,7 +24,7 @@ class Folder extends Service
         return $this->folderId;
     }
 
-    public function get(): JotformResponse
+    public function get(): ?array
     {
         return $this->client->get("{$this->name}/{$this->folderId}");
     }

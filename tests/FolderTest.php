@@ -8,10 +8,9 @@ class FolderTest extends TestCase
     public function test_get_folder_with_invalid_id()
     {
         // [TODO]
-        $response = $this->jotform->folder("<FOLDER_ID>")->get();
-        $folder = $response->toObject();
+        $folder = $this->jotform->folder("<FOLDER_ID>")->get();
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(200, $this->jotform->response()->getStatusCode());
         $this->assertEmpty($folder);
     }
 }
