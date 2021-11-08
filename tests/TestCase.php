@@ -16,8 +16,7 @@ abstract class TestCase extends BaseTestCase
 
     protected function setUp(): void
     {
-        // [TODO]
-        $this->client = new JotformClient($_ENV['API_KEY']);
+        $this->client = new JotformClient(getenv('JOTFORM_API_KEY'));
         $this->jotform = new Jotform($this->client);
     }
 }

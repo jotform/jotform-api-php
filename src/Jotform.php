@@ -20,7 +20,7 @@ class Jotform
 
         // Check 'euOnly' flag for User while initializing.
         if ($euCheck) {
-            $user = $this->user()->get()->toArray();
+            $user = $this->user()->get();
             if (isset($user['euOnly'])) {
                 $this->client->europeOnly(true);
             }
@@ -60,5 +60,10 @@ class Jotform
     public function system(): System
     {
         return new System($this->client);
+    }
+
+    public function response(): JotformResponse
+    {
+        return $this->client->response;
     }
 }

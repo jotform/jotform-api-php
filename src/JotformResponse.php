@@ -15,11 +15,6 @@ class JotformResponse
         $this->message = $message;
     }
 
-    public function toArray(): ?array
-    {
-        return $this->content;
-    }
-
     public function toJson(): ?string
     {
         return json_encode($this->content);

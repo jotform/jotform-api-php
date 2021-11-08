@@ -14,7 +14,7 @@ class System extends Service
         return $this->folderId;
     }
 
-    public function plan(string $name): JotformResponse
+    public function plan(string $name): ?array
     {
         return $this->client->get("{$this->name}/plan/" . strtoupper($name));
     }

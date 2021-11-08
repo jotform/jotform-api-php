@@ -24,12 +24,12 @@ class Submission extends Service
         return $this->submissionId;
     }
 
-    public function get(): JotformResponse
+    public function get(): ?array
     {
         return $this->client->get("{$this->name}/{$this->submissionId}");
     }
 
-    public function getAll(): JotformResponse
+    public function getAll(): ?array
     {
         return $this->client->get("{$this->name}/{$this->submissionId}");
     }
@@ -39,7 +39,7 @@ class Submission extends Service
      * @param  array|string  $params Data Array or JSON String
      * @return JotformResponse
      */
-    public function create(string $formId, $params): JotformResponse
+    public function create(string $formId, $params): ?array
     {
         $endpoint = "form/{$formId}/submissions";
 
@@ -50,12 +50,12 @@ class Submission extends Service
         return $this->client->post($endpoint, $this->prepareParams($params));
     }
 
-    public function update(array $params): JotformResponse
+    public function update(array $params): ?array
     {
         return $this->client->post("{$this->name}/{$this->submissionId}", $this->prepareParams($params));
     }
 
-    public function delete(): JotformResponse
+    public function delete(): ?array
     {
         return $this->client->delete("{$this->name}/{$this->submissionId}");
     }

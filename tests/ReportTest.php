@@ -10,11 +10,10 @@ class ReportTest extends TestCase
     public function test_get_report_with_invalid_id()
     {
         // [TODO]
-        // $this->expectException(JotformException::class);
-        $response = $this->jotform->report("<REPORT_ID>")->get();
-        $report = $response->toArray();
+        $this->expectException(JotformException::class);
+        $report = $this->jotform->report("<REPORT_ID>")->get();
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(200, $this->jotform->response()->getStatusCode());
         $this->assertEmpty($report);
     }
 }

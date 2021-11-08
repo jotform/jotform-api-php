@@ -14,72 +14,72 @@ class User extends Service
     /** @var string */
     protected $name = 'user';
 
-    public function get(): JotformResponse
+    public function get(): ?array
     {
         return $this->client->get($this->name);
     }
 
-    public function register(array $user): JotformResponse
+    public function register(array $user): ?array
     {
         return $this->client->post("{$this->name}/register", $user);
     }
 
-    public function login(array $credentials): JotformResponse
+    public function login(array $credentials): ?array
     {
         return $this->client->post("{$this->name}/login", $credentials);
     }
 
-    public function logout(): JotformResponse
+    public function logout(): ?array
     {
         return $this->client->get("{$this->name}/logout");
     }
 
-    public function usage(): JotformResponse
+    public function usage(): ?array
     {
         return $this->client->get("{$this->name}/usage");
     }
 
-    public function forms(): JotformResponse
+    public function forms(): ?array
     {
         return $this->client->get("{$this->name}/forms", $this->getConditions());
     }
 
-    public function createForm(array $params): JotformResponse
+    public function createForm(array $params): ?array
     {
         return (new Form($this->client, null))->create($params);
     }
 
-    public function submissions(): JotformResponse
+    public function submissions(): ?array
     {
         return $this->client->get("{$this->name}/submissions", $this->getConditions());
     }
 
-    public function subUsers(): JotformResponse
+    public function subUsers(): ?array
     {
         return $this->client->get("{$this->name}/subusers");
     }
 
-    public function folders(): JotformResponse
+    public function folders(): ?array
     {
         return $this->client->get("{$this->name}/folders");
     }
 
-    public function reports(): JotformResponse
+    public function reports(): ?array
     {
         return $this->client->get('{$this->name}/reports');
     }
 
-    public function settings(): JotformResponse
+    public function settings(): ?array
     {
         return $this->client->get("{$this->name}/settings");
     }
 
-    public function updateSettings(array $params): JotformResponse
+    public function updateSettings(array $params): ?array
     {
         return $this->client->post("{$this->name}/settings", $params);
     }
 
-    public function history(): JotformResponse
+    public function history(): ?array
     {
         return $this->client->get("{$this->name}/history", $this->getQueries());
     }
