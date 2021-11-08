@@ -186,6 +186,7 @@ class JotformClient
         }
 
         $this->response = new JotformResponse($response, $statusCode, $response["message"] ?? null);
+
         return $response;
     }
 

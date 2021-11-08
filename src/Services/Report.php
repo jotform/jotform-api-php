@@ -3,7 +3,6 @@
 namespace Jotform\Services;
 
 use Jotform\JotformClient;
-use Jotform\JotformResponse;
 
 class Report extends Service
 {
