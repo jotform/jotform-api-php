@@ -49,7 +49,7 @@ $client = new JotformClient('<YOUR_API_KEY>');
 $jotform = new Jotform($client);
 
 $forms = $jotform->user()->forms();
-foreach ($forms->toArray() as $form) {
+foreach ($forms as $form) {
     echo $form['title'] . PHP_EOL;
 }
 ``` 
@@ -67,7 +67,7 @@ try {
     $client = new JotformClient('<YOUR_API_KEY>');
     $jotform = new Jotform($client);
 
-    $forms = $jotform->user()->forms()->toArray();
+    $forms = $jotform->user()->forms();
     $latestForm = $forms[0];
     $latestFormId = $latestForm['id'];
 
@@ -142,7 +142,7 @@ try {
     $jotform = new Jotform($client);
 
     $submissions = $jotform->user()->limit(50)->orderBy('created_at')->submissions();
-    foreach ($submissions->toArray() as $submission) {
+    foreach ($submissions as $submission) {
         $result = $jotform->submission($submission['id'])->delete();
         echo $result . PHP_EOL;
     }
@@ -151,5 +151,12 @@ catch (Exception $e) {
     var_dump($e->getMessage());
 }
 ```
+
+## Notes
+- Condition methods: `filter`, `limit`, `offset`, `orderBy`
+- Query methods: `action`, `sortBy`, `date`, `startDate`, `endDate`
+- Limitation: *(for now)*
+    - **Condition methods** can be used with `Form` and `User` services.
+    - **Query methods** can be used with `User` service.
 ---
 Jotform
