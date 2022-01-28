@@ -9,6 +9,8 @@
  */
 
 spl_autoload_register(function ($class) {
+    $file = array_values(explode('\\', $class));
+    $class = end($file);
     $paths = [
         __DIR__ . '/src',
         __DIR__ . '/src/Services',
@@ -17,7 +19,7 @@ spl_autoload_register(function ($class) {
     ];
     foreach ($paths as $path) {
         if (is_readable($file = "{$path}/{$class}.php")) {
-            include_once($file);
+            require_once($file);
         }
     }
 });

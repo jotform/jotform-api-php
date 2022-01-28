@@ -71,7 +71,7 @@ try {
     $latestForm = $forms[0];
     $latestFormId = $latestForm['id'];
 
-    $submissions = $jotform->form($latestFormId)->getSubmissions();
+    $submissions = $jotform->form($latestFormId)->submissions();
     var_dump($submissions);
 }
 catch (Exception $e) {

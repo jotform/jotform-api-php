@@ -65,7 +65,7 @@ class User extends Service
 
     public function reports(): ?array
     {
-        return $this->client->get('{$this->name}/reports');
+        return $this->client->get("{$this->name}/reports");
     }
 
     public function settings(): ?array
