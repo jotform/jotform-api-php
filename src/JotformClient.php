@@ -145,11 +145,10 @@ class JotformClient
         curl_close($ch);
 
         if ($this->debug) {
-            // [TODO]
-            // var_dump([
-            //     'parameters' => $params,
-            //     'info' => $info,
-            // ]);
+            print_r([
+                'parameters' => $params,
+                'info' => $info,
+            ]);
         }
 
         if ($response == false) {
