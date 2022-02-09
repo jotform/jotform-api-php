@@ -422,6 +422,56 @@ class JotForm {
     }
 
     /**
+     * [createFolder Create a folder]
+     * @param  [array] $folderProperties [Properties of new folder.]
+     * @return [array] [New folder.]
+     */
+    public function createFolder($folderProperties) {
+        return $this->executePostRequest('folder', $folderProperties);
+    }
+
+    /**
+    * [deleteFolder Delete a specific folder and its subfolders]
+    * @param  [string] $folderID [You can get a list of folders from /user/folders.]
+    * @return [array] [Returns status of request.]
+    */
+    public function deleteFolder($folderID) {
+        return $this->executeDeleteRequest("folder/{$folderID}", null);
+    }
+
+    /**
+    * [updateFolder Update a specific folder]
+    * @param  [string] $folderID [You can get a list of folders from /user/folders.]
+    * @param  [json] $folderProperties [New properties of the specified folder.]
+    * @return [array] [Returns status of request.]
+    */
+    public function updateFolder($folderID, $folderProperties) {
+        return $this->executePutRequest("folder/{$folderID}", $folderProperties);
+    }
+
+    /**
+    * [addFormsToFolder Add forms to the specified folder]
+    * @param  [string] $folderID [You can get the list of folders from /user/folders.]
+    * @param  [array] $formIDs [You can get the list of forms from /user/forms.]
+    * @return [array] [Returns status of request.]
+    */
+    public function addFormsToFolder($folderID, $formIDs) {
+        $formattedFormIDs = json_encode(["forms" => $formIDs]);
+        return $this->updateFolder($folderID, $formattedFormIDs);
+    }
+
+    /**
+    * [addFormToFolder Add a form to the specified folder]
+    * @param  [string] $folderID [You can get the list of folders from /user/folders.]
+    * @param  [string] $formID [You can get the list of forms from /user/forms.]
+    * @return [array] [Returns status of request.]
+    */
+    public function addFormToFolder($folderID, $formID) {
+        $formattedFormID = json_encode(["forms" => [$formID]]);
+        return $this->updateFolder($folderID, $formattedFormID);
+    }
+
+    /**
     * [getFormProperties Get a list of all properties on a form]
     * @param  [integer] $formID [Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.]
     * @return [array] [Returns form properties like width, expiration date, style etc.]
