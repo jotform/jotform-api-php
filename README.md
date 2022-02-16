@@ -1,6 +1,6 @@
 jotform-api-php 
 ===============
-[JotForm API](http://api.jotform.com/docs/) - PHP Client
+[JotForm API](https://api.jotform.com/docs/) - PHP Client
 
 
 ### Installation
@@ -12,7 +12,7 @@ Install via git clone:
         
 or
 
-Install via Composer package manager (http://getcomposer.org/)
+Install via Composer package manager (https://getcomposer.org/)
         
 _composer.json_
 ```json
@@ -27,11 +27,11 @@ _composer.json_
 
 ### Documentation
 
-You can find the docs for the API of this client at [http://api.jotform.com/docs/](http://api.jotform.com/docs)
+You can find the docs for the API of this client at [https://api.jotform.com/docs/](https://api.jotform.com/docs)
 
 ### Authentication
 
-JotForm API requires API key for all user related calls. You can create your API Keys at  [API section](http://www.jotform.com/myaccount/api) of My Account page.
+JotForm API requires API key for all user related calls. You can create your API Keys at  [API section](https://www.jotform.com/myaccount/api) of My Account page.
 
 ### Examples
 

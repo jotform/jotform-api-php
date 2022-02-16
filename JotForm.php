@@ -1,4 +1,5 @@
 <?php
+
 /**
  * JotForm API - PHP Client
  *
@@ -39,64 +40,64 @@ class JotForm {
         }
     }
 
-    private function _debugLog($str) {
-        if ($this->debugMode){
+    private function debugLog($str) {
+        if ($this->debugMode) {
             print_r(PHP_EOL);
             print_r($str);
         }
     }
 
-    private function _debugDump($obj) {
-        if ($this->debugMode){
+    private function debugDump($obj) {
+        if ($this->debugMode) {
             print_r(PHP_EOL);
             var_dump($obj);
         }
     }
 
-    private function _executeHttpRequest($path, $params = array(), $method) {
+    private function executeHttpRequest($path, $method, $params = []) {
         if ($this->outputType != 'json') {
             $path = "{$path}.xml";
         }
 
-        $url = implode('/', array($this->baseURL, $this->apiVersion, $path));
+        $url = implode('/', [$this->baseURL, $this->apiVersion, $path]);
 
-        $this->_debugDump($params);
+        $this->debugDump($params);
 
-        if ($method == 'GET' && $params != null){
-            $params_array = array();
+        if ($method == 'GET' && $params != null) {
+            $params_array = [];
             foreach ($params as $key => $value) {
                 $params_array[] = "{$key}={$value}";
             }
             $params_string = '?' . implode('&', $params_array);
             unset($params_array);
-            $url = $url.$params_string;
-            $this->_debugLog('params string: '.$params_string);
+            $url = $url . $params_string;
+            $this->debugLog('params string: ' . $params_string);
         }
 
-        $this->_debugLog('fetching url: '.$url);
+        $this->debugLog('fetching url: ' . $url);
 
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_USERAGENT, 'JOTFORM_PHP_WRAPPER');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('APIKEY: '.$this->apiKey));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['APIKEY: ' . $this->apiKey]);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         switch ($method) {
             case 'POST':
-                $this->_debugLog('posting');
+                $this->debugLog('posting');
                 curl_setopt($ch, CURLOPT_POST, true);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-            break;
+                break;
             case 'PUT':
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-            break;
+                break;
             case 'DELETE':
-                $this->_debugLog('delete');
+                $this->debugLog('delete');
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
-            break;
+                break;
         }
 
         $result = curl_exec($ch);
@@ -106,7 +107,7 @@ class JotForm {
         }
 
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $this->_debugLog('http code is: '.$http_status);
+        $this->debugLog('http code is: ' . $http_status);
 
         if ($this->outputType == 'json') {
             $result_obj = json_decode($result, true);
@@ -115,12 +116,11 @@ class JotForm {
         }
 
         if ($http_status != 200) {
-
             switch ($http_status) {
                 case 400:
                 case 403:
                 case 404:
-                    throw new JotFormException($result_obj["message"], $http_status );
+                    throw new JotFormException($result_obj["message"], $http_status);
                 break;
                 case 401:
                     throw new JotFormException("Invalid API key or Unauthorized API call", $http_status);
@@ -148,40 +148,40 @@ class JotForm {
         }
     }
 
-    private function _executeGetRequest($url, $params = array()) {
-        return $this->_executeHttpRequest($url, $params, 'GET');
+    private function executeGetRequest($url, $params = []) {
+        return $this->executeHttpRequest($url, 'GET', $params);
     }
 
-    private function _executePostRequest($url, $params) {
-        return $this->_executeHttpRequest($url, $params, 'POST');
+    private function executePostRequest($url, $params) {
+        return $this->executeHttpRequest($url, 'POST', $params);
     }
 
-    private function _executePutRequest($url, $params) {
-        return $this->_executeHttpRequest($url, $params, 'PUT');
+    private function executePutRequest($url, $params) {
+        return $this->executeHttpRequest($url, 'PUT', $params);
     }
 
-    private function _executeDeleteRequest($url, $params = array()) {
-        return $this->_executeHttpRequest($url, $params, 'DELETE');
+    private function executeDeleteRequest($url, $params = []) {
+        return $this->executeHttpRequest($url, 'DELETE', $params);
     }
 
     private function createConditions($offset, $limit, $filter, $orderby) {
-        $params = array();
-        foreach (array('offset', 'limit', 'filter', 'orderby') as $arg) {
-             if (${$arg}) {
-                 $params[strtolower($arg)] = ${$arg};
-                 if ($arg == "filter") {
+        $params = [];
+        foreach (['offset', 'limit', 'filter', 'orderby'] as $arg) {
+            if (${$arg}) {
+                $params[strtolower($arg)] = ${$arg};
+                if ($arg == "filter") {
                      $params[$arg] = urlencode(json_encode($params[$arg]));
-                 }
-             }
+                }
+            }
         }
         return $params;
     }
 
     private function createHistoryQuery($action, $date, $sortBy, $startDate, $endDate) {
-        foreach (array('action', 'date', 'sortBy', 'startDate', 'endDate') as $arg) {
-             if (${$arg}) {
-                 $params[$arg] = ${$arg};
-             }
+        foreach (['action', 'date', 'sortBy', 'startDate', 'endDate'] as $arg) {
+            if (${$arg}) {
+                $params[$arg] = ${$arg};
+            }
         }
         return $params;
     }
@@ -191,7 +191,7 @@ class JotForm {
      * @return [array] [Returns user account type, avatar URL, name, email, website URL and account limits.]
      */
     public function getUser() {
-        $res = $this->_executeGetRequest('user');
+        $res = $this->executeGetRequest('user');
         return $res;
     }
 
@@ -200,7 +200,7 @@ class JotForm {
     * @return [array] [Returns number of submissions, number of SSL form submissions, payment form submissions and upload space used by user.]
     */
     public function getUsage(){
-        return $this->_executeGetRequest('user/usage');
+        return $this->executeGetRequest('user/usage');
     }
 
     /**
@@ -213,7 +213,7 @@ class JotForm {
      */
     public function getForms($offset = 0, $limit = 0, $filter = null, $orderby = null) {
         $params = $this->createConditions($offset, $limit, $filter, $orderby);
-        return $this->_executeGetRequest('user/forms', $params);
+        return $this->executeGetRequest('user/forms', $params);
     }
 
     /**
@@ -226,7 +226,7 @@ class JotForm {
      */
     public function getSubmissions($offset = 0, $limit = 0, $filter = null, $orderby = null) {
         $params = $this->createConditions($offset, $limit, $filter, $orderby);
-        return $this->_executeGetRequest('user/submissions', $params);
+        return $this->executeGetRequest('user/submissions', $params);
     }
 
     /**
@@ -234,7 +234,7 @@ class JotForm {
     * @return [array] [Returns list of forms and form folders with access privileges.]
     */
     public function getSubusers() {
-        return $this->_executeGetRequest('user/subusers');
+        return $this->executeGetRequest('user/subusers');
     }
 
     /**
@@ -242,7 +242,7 @@ class JotForm {
     * @return [array] [Returns name of the folder and owner of the folder for shared folders.]
     */
     public function getFolders() {
-        return $this->_executeGetRequest('user/folders');
+        return $this->executeGetRequest('user/folders');
     }
 
     /**
@@ -250,7 +250,7 @@ class JotForm {
     * @return [array] [Returns reports for all of the forms. ie. Excel, CSV, printable charts, embeddable HTML tables.]
     */
     public function getReports() {
-        return $this->_executeGetRequest('user/reports');
+        return $this->executeGetRequest('user/reports');
     }
 
     /**
@@ -258,7 +258,7 @@ class JotForm {
     * @return [array]  [Returns user's time zone and language.]
     */
     public function getSettings() {
-        return $this->_executeGetRequest('user/settings');
+        return $this->executeGetRequest('user/settings');
     }
 
     /**
@@ -267,7 +267,7 @@ class JotForm {
     * @return [array] [Returns changes on user settings]
     */
     public function updateSettings($settings) {
-        return $this->_executePostRequest('user/settings', $settings);
+        return $this->executePostRequest('user/settings', $settings);
     }
 
     /**
@@ -281,7 +281,7 @@ class JotForm {
     */
     public function getHistory($action = null, $date = null, $sortBy = null, $startDate = null, $endDate = null) {
         $params = $this->createHistoryQuery($action, $date, $sortBy, $startDate, $endDate);
-        return $this->_executeGetRequest('user/history', $params);
+        return $this->executeGetRequest('user/history', $params);
     }
 
     /**
@@ -290,7 +290,7 @@ class JotForm {
      * @return [array] [Returns form ID, status, update and creation dates, submission count etc.]
      */
     public function getForm($formID) {
-        return $this->_executeGetRequest('form/'. $formID);
+        return $this->executeGetRequest('form/' . $formID);
     }
 
     /**
@@ -299,7 +299,7 @@ class JotForm {
     * @return [array] [Returns question properties of a form.]
     */
     public function getFormQuestions($formID) {
-        return $this->_executeGetRequest("form/{$formID}/questions");
+        return $this->executeGetRequest("form/{$formID}/questions");
     }
 
     /**
@@ -309,7 +309,7 @@ class JotForm {
     * @return [array] [Returns question properties like required and validation.]
     */
     public function getFormQuestion($formID, $qid) {
-        return $this->_executeGetRequest("form/{$formID}/question/{$qid}");
+        return $this->executeGetRequest("form/{$formID}/question/{$qid}");
     }
 
     /**
@@ -323,7 +323,7 @@ class JotForm {
      */
     public function getFormSubmissions($formID, $offset = 0, $limit = 0, $filter = null, $orderby = null) {
         $params = $this->createConditions($offset, $limit, $filter, $orderby);
-        return $this->_executeGetRequest("form/{$formID}/submissions", $params);
+        return $this->executeGetRequest("form/{$formID}/submissions", $params);
     }
 
     /**
@@ -333,7 +333,7 @@ class JotForm {
      * @return [array] [Returns posted submission ID and URL.]
      */
     public function createFormSubmission($formID, $submission) {
-        $sub = array();
+        $sub = [];
         foreach ($submission as $key => $value) {
             if (strpos($key, '_')) {
                 $qid = substr($key, 0, strpos($key, '_'));
@@ -343,7 +343,7 @@ class JotForm {
                 $sub["submission[{$key}]"] = $value;
             }
         }
-        return $this->_executePostRequest("form/{$formID}/submissions", $sub);
+        return $this->executePostRequest("form/{$formID}/submissions", $sub);
     }
 
     /**
@@ -353,7 +353,7 @@ class JotForm {
     * @return [array]
     */
     public function createFormSubmissions($formID, $submissions) {
-        return $this->_executePutRequest("form/".$formID."/submissions", $submissions);
+        return $this->executePutRequest("form/" . $formID . "/submissions", $submissions);
     }
 
     /**
@@ -362,7 +362,7 @@ class JotForm {
     * @return [array] [Returns uploaded file information and URLs on a specific form.]
     */
     public function getFormFiles($formID) {
-        return $this->_executeGetRequest("form/{$formID}/files");
+        return $this->executeGetRequest("form/{$formID}/files");
     }
 
     /**
@@ -371,7 +371,7 @@ class JotForm {
     * @return [array] [Returns list of webhooks for a specific form.]
     */
     public function getFormWebhooks($formID) {
-        return $this->_executeGetRequest("form/{$formID}/webhooks");
+        return $this->executeGetRequest("form/{$formID}/webhooks");
     }
 
     /**
@@ -381,7 +381,7 @@ class JotForm {
     * @return [array] [Returns list of webhooks for a specific form.]
     */
     public function createFormWebhook($formID, $webhookURL) {
-        return $this->_executePostRequest("form/{$formID}/webhooks", array('webhookURL' => $webhookURL) );
+        return $this->executePostRequest("form/{$formID}/webhooks", ['webhookURL' => $webhookURL]);
     }
 
     /**
@@ -391,7 +391,7 @@ class JotForm {
     * @return [array] [Returns remaining webhook URLs of form.]
     */
     public function deleteFormWebhook($formID, $webhookID) {
-        return $this->_executeDeleteRequest("form/{$formID}/webhooks/{$webhookID}", null);
+        return $this->executeDeleteRequest("form/{$formID}/webhooks/{$webhookID}", null);
     }
 
     /**
@@ -400,7 +400,7 @@ class JotForm {
     * @return [array] [Returns information and answers of a specific submission.]
     */
     public function getSubmission($sid) {
-        return $this->_executeGetRequest("submission/{$sid}");
+        return $this->executeGetRequest("submission/{$sid}");
     }
 
     /**
@@ -409,7 +409,7 @@ class JotForm {
     * @return [array] [Returns properties of a speceific report like fields and status.]
     */
     public function getReport($reportID) {
-        return $this->_executeGetRequest("report/{$reportID}");
+        return $this->executeGetRequest("report/{$reportID}");
     }
 
     /**
@@ -418,7 +418,57 @@ class JotForm {
     * @return [array] [Returns a list of forms in a folder, and other details about the form such as folder color.]
     */
     public function getFolder($folderID) {
-        return $this->_executeGetRequest("folder/{$folderID}");
+        return $this->executeGetRequest("folder/{$folderID}");
+    }
+
+    /**
+     * [createFolder Create a folder]
+     * @param  [array] $folderProperties [Properties of new folder.]
+     * @return [array] [New folder.]
+     */
+    public function createFolder($folderProperties) {
+        return $this->executePostRequest('folder', $folderProperties);
+    }
+
+    /**
+    * [deleteFolder Delete a specific folder and its subfolders]
+    * @param  [string] $folderID [You can get a list of folders from /user/folders.]
+    * @return [array] [Returns status of request.]
+    */
+    public function deleteFolder($folderID) {
+        return $this->executeDeleteRequest("folder/{$folderID}", null);
+    }
+
+    /**
+    * [updateFolder Update a specific folder]
+    * @param  [string] $folderID [You can get a list of folders from /user/folders.]
+    * @param  [json] $folderProperties [New properties of the specified folder.]
+    * @return [array] [Returns status of request.]
+    */
+    public function updateFolder($folderID, $folderProperties) {
+        return $this->executePutRequest("folder/{$folderID}", $folderProperties);
+    }
+
+    /**
+    * [addFormsToFolder Add forms to the specified folder]
+    * @param  [string] $folderID [You can get the list of folders from /user/folders.]
+    * @param  [array] $formIDs [You can get the list of forms from /user/forms.]
+    * @return [array] [Returns status of request.]
+    */
+    public function addFormsToFolder($folderID, $formIDs) {
+        $formattedFormIDs = json_encode(["forms" => $formIDs]);
+        return $this->updateFolder($folderID, $formattedFormIDs);
+    }
+
+    /**
+    * [addFormToFolder Add a form to the specified folder]
+    * @param  [string] $folderID [You can get the list of folders from /user/folders.]
+    * @param  [string] $formID [You can get the list of forms from /user/forms.]
+    * @return [array] [Returns status of request.]
+    */
+    public function addFormToFolder($folderID, $formID) {
+        $formattedFormID = json_encode(["forms" => [$formID]]);
+        return $this->updateFolder($folderID, $formattedFormID);
     }
 
     /**
@@ -427,7 +477,7 @@ class JotForm {
     * @return [array] [Returns form properties like width, expiration date, style etc.]
     */
     public function getFormProperties($formID) {
-        return $this->_executeGetRequest("form/{$formID}/properties");
+        return $this->executeGetRequest("form/{$formID}/properties");
     }
 
     /**
@@ -437,7 +487,7 @@ class JotForm {
     * @return [array] [Returns given property key value.]
     */
     public function getFormProperty($formID, $propertyKey) {
-        return $this->_executeGetRequest("form/{$formID}/properties/{$propertyKey}");
+        return $this->executeGetRequest("form/{$formID}/properties/{$propertyKey}");
     }
 
     /**
@@ -446,7 +496,7 @@ class JotForm {
     * @return [array] [Returns a list of reports in a form, and other details about the reports such as title.]
     */
     public function getFormReports($formID) {
-        return $this->_executeGetRequest("form/{$formID}/reports");
+        return $this->executeGetRequest("form/{$formID}/reports");
     }
 
     /**
@@ -456,7 +506,7 @@ class JotForm {
     * @return [array] [Returns report details and URL.]
     */
     public function createReport($formID, $report) {
-        return $this->_executePostRequest("form/{$formID}/reports", $report);
+        return $this->executePostRequest("form/{$formID}/reports", $report);
     }
 
     /**
@@ -465,7 +515,7 @@ class JotForm {
     * @return [array] [Returns status of request.]
     */
     public function deleteSubmission($sid) {
-        return $this->_executeDeleteRequest("submission/{$sid}");
+        return $this->executeDeleteRequest("submission/{$sid}");
     }
 
     /**
@@ -475,7 +525,7 @@ class JotForm {
     * @return [array] [Returns status of request.]
     */
     public function editSubmission($sid, $submission) {
-        $sub = array();
+        $sub = [];
         foreach ($submission as $key => $value) {
             if (strpos($key, '_') && $key != 'created_at') {
                 $qid = substr($key, 0, strpos($key, '_'));
@@ -485,7 +535,7 @@ class JotForm {
                 $sub["submission[{$key}]"] = $value;
             }
         }
-        return $this->_executePostRequest("submission/".$sid, $sub);
+        return $this->executePostRequest("submission/" . $sid, $sub);
     }
 
     /**
@@ -494,7 +544,7 @@ class JotForm {
     * @return [array] [Returns status of request.]
     */
     public function cloneForm($formID) {
-        return $this->_executePostRequest("form/{$formID}/clone", null);
+        return $this->executePostRequest("form/{$formID}/clone", null);
     }
 
     /**
@@ -504,7 +554,7 @@ class JotForm {
     * @return [array] [Returns status of request.]
     */
     public function deleteFormQuestion($formID, $qid) {
-        return $this->_executeDeleteRequest("form/{$formID}/question/{$qid}", null);
+        return $this->executeDeleteRequest("form/{$formID}/question/{$qid}", null);
     }
 
     /**
@@ -514,11 +564,11 @@ class JotForm {
     * @return [array] [Returns properties of new question.]
     */
     public function createFormQuestion($formID, $question) {
-        $params = array();
+        $params = [];
         foreach ($question as $key => $value) {
             $params["question[{$key}]"] = $value;
         }
-        return $this->_executePostRequest("form/{$formID}/questions", $params);
+        return $this->executePostRequest("form/{$formID}/questions", $params);
     }
 
     /**
@@ -528,7 +578,7 @@ class JotForm {
     * @return [array] [Returns properties of new questions.]
     */
     public function createFormQuestions($formID, $questions) {
-        return $this->_executePutRequest("form/{$formID}/questions", $questions);
+        return $this->executePutRequest("form/{$formID}/questions", $questions);
     }
 
     /**
@@ -539,11 +589,11 @@ class JotForm {
     * @return [array] [Returns edited property and type of question.]
     */
     public function editFormQuestion($formID, $qid, $questionProperties) {
-        $question = array();
+        $question = [];
         foreach ($questionProperties as $key => $value) {
             $question["question[{$key}]"] = $value;
         }
-        return $this->_executePostRequest("form/{$formID}/question/{$qid}", $question);
+        return $this->executePostRequest("form/{$formID}/question/{$qid}", $question);
     }
 
     /**
@@ -553,11 +603,11 @@ class JotForm {
     * @return [array] [Returns edited properties.]
     */
     public function setFormProperties($formID, $formProperties) {
-        $properties = array();
+        $properties = [];
         foreach ($formProperties as $key => $value) {
             $properties["properties[{$key}]"] = $value;
         }
-        return $this->_executePostRequest("form/{$formID}/properties", $properties);
+        return $this->executePostRequest("form/{$formID}/properties", $properties);
     }
 
     /**
@@ -567,7 +617,7 @@ class JotForm {
     * @return [array] [Returns edited properties.]
     */
     public function setMultipleFormProperties($formID, $formProperties) {
-        return $this->_executePutRequest("form/{$formID}/properties", $formProperties);
+        return $this->executePutRequest("form/{$formID}/properties", $formProperties);
     }
 
     /**
@@ -576,7 +626,7 @@ class JotForm {
     * @return [array] [Returns new form.]
     */
     public function createForm($form) {
-        $params = array();
+        $params = [];
         foreach ($form as $key => $value) {
             foreach ($value as $k => $v) {
                 if ($key == "properties") {
@@ -588,7 +638,7 @@ class JotForm {
                 }
             }
         }
-        return $this->_executePostRequest('user/forms', $params);
+        return $this->executePostRequest('user/forms', $params);
     }
 
     /**
@@ -597,7 +647,7 @@ class JotForm {
     * @return [array] [Returns new forms.]
     */
     public function createForms($forms) {
-        return $this->_executePutRequest('user/forms', $forms);
+        return $this->executePutRequest('user/forms', $forms);
     }
 
     /**
@@ -606,7 +656,7 @@ class JotForm {
     * @return  [array] [Returns roperties of deleted form.]
     */
     public function deleteForm($formID) {
-        return $this->_executeDeleteRequest("form/{$formID}", null);
+        return $this->executeDeleteRequest("form/{$formID}", null);
     }
 
     /**
@@ -615,7 +665,7 @@ class JotForm {
     * @return [array] [Returns new user's details]
     */
     public function registerUser($userDetails) {
-        return $this->_executePostRequest('user/register', $userDetails);
+        return $this->executePostRequest('user/register', $userDetails);
     }
 
     /**
@@ -624,7 +674,7 @@ class JotForm {
     * @return [array] [Returns logged in user's settings and app key.]
     */
     public function loginUser($credentials) {
-        return $this->_executePostRequest('user/login', $credentials);
+        return $this->executePostRequest('user/login', $credentials);
     }
 
     /**
@@ -632,7 +682,7 @@ class JotForm {
     * @return [array] [Status of request]
     */
     public function logoutUser() {
-        return $this->_executeGetRequest('user/logout');
+        return $this->executeGetRequest('user/logout');
     }
 
     /**
@@ -641,17 +691,19 @@ class JotForm {
     * @return [array] [Returns details of a plan]
     */
     public function getPlan($planName) {
-        return $this->_executeGetRequest("system/plan/{$planName}");
+        return $this->executeGetRequest("system/plan/{$planName}");
     }
 
     /**
     * [deleteReport Delete a specific report]
-    * @param [integer] $formID [$reportID [You can get a list of reports from /user/reports.]
+    * @param [integer] $reportID [You can get a list of reports from /user/reports.]
     * @return  [array] [Returns status of request.]
     */
     public function deleteReport($reportID) {
-        return $this->_executeDeleteRequest("report/{$reportID}", null);
+        return $this->executeDeleteRequest("report/{$reportID}", null);
     }
 }
 
-class JotFormException extends Exception {}
+class JotFormException extends Exception {
+
+}
